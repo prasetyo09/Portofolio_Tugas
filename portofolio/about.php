@@ -7,6 +7,16 @@ if (!isset($_SESSION['NAME'])) {
     header("location:index.php");
     exit();
 }
+
+$query = mysqli_query($conn, "SELECT * FROM about ORDER BY id DESC");
+$rows = mysqli_fetch_all($query, MYSQLI_ASSOC);
+
+if (isset($_GET['delete'])){
+    $delete = $_GET ['delete'];
+    $delete = mysqli_query ($conn, "DELETE FROM about WHERE id='$delete'");
+    header("location:about.php?hapus=berhasil");
+}
+?>
 ?>
 <!doctype html>
 <html lang="en">
@@ -159,18 +169,18 @@ if (!isset($_SESSION['NAME'])) {
                 </a>
                 </li>
             </ul>
-            <div class="unlimited-access hide-menu bg-primary-subtle position-relative mb-7 mt-7 rounded-3"> 
+            <!-- <div class="unlimited-access hide-menu bg-primary-subtle position-relative mb-7 mt-7 rounded-3"> 
                 <div class="d-flex">
-                <div class="unlimited-access-title me-3">
-                    <h6 class="fw-semibold fs-4 mb-6 text-dark w-75">Upgrade to pro</h6>
-                    <a href="#" target="_blank"
-                    class="btn btn-primary fs-2 fw-semibold lh-sm">Buy Pro</a>
+                    <div class="unlimited-access-title me-3">
+                        <h6 class="fw-semibold fs-4 mb-6 text-dark w-75">Upgrade to pro</h6>
+                        <a href="#" target="_blank"
+                        class="btn btn-primary fs-2 fw-semibold lh-sm">Buy Pro</a>
+                    </div>
+                    <div class="unlimited-access-img">
+                        <img src="portofolio/src/assets/images/backgrounds/rocket.png" alt="" class="img-fluid">
+                    </div>
                 </div>
-                <div class="unlimited-access-img">
-                    <img src="portofolio/src/assets/images/backgrounds/rocket.png" alt="" class="img-fluid">
-                </div>
-                </div>
-            </div>
+            </div> -->
             </nav>
             <!-- End Sidebar navigation -->
         </div>
@@ -197,10 +207,10 @@ if (!isset($_SESSION['NAME'])) {
             </ul>
             <div class="navbar-collapse justify-content-end px-0" id="navbarNav">
                 <ul class="navbar-nav flex-row ms-auto align-items-center justify-content-end">
-                <a href="#" target="_blank"
-                    class="btn btn-primary me-2"><span class="d-none d-md-block">Check Pro Version</span> <span class="d-block d-md-none">Pro</span></a>
-                <a href="#" target="_blank"
-                    class="btn btn-success"><span class="d-none d-md-block">Download Free </span> <span class="d-block d-md-none">Free</span></a>
+                <a href="create-about.php" target="_blank"
+                    class="btn btn-primary me-2"><span class="d-none d-md-block">Create New Data</span> <span class="d-block d-md-none">Pro</span></a>
+                <!-- <a href="#" target="_blank"
+                    class="btn btn-success"><span class="d-none d-md-block">Download Free </span> <span class="d-block d-md-none">Free</span></a> -->
                 <li class="nav-item dropdown">
                     <a class="nav-link nav-icon-hover" href="javascript:void(0)" id="drop2" data-bs-toggle="dropdown"
                     aria-expanded="false">
@@ -256,76 +266,49 @@ if (!isset($_SESSION['NAME'])) {
                         </div>
                     </div>
                 </div> -->
-                <div class="col-lg-8">
+                <div class="col-lg-12">
                     <div class="card">
                         <div class="card-body">
-                            <h5 class="card-title">View by page title and screen class</h5>
+                            <h5 class="card-title">About</h5>
                             <div class="table-responsive">
                                 <table class="table text-nowrap align-middle mb-0">
                                     <thead>
                                         <tr class="border-2 border-bottom border-primary border-0"> 
-                                        <th scope="col" class="ps-0">Page Title</th>
-                                        <th scope="col" >Link</th>
-                                        <th scope="col" class="text-center">Pageviews</th>
-                                        <th scope="col" class="text-center">Page Value</th>
+                                            <th scope="col" class="ps-0">No</th>
+                                            <th scope="col" class="ps-0">Role</th>
+                                            <th scope="col" class="ps-0">Birthday</th>
+                                            <th scope="col" class="ps-0">Website</th>
+                                            <th scope="col" class="ps-0">Degree</th>
+                                            <th scope="col" class="ps-0">Phone</th>
+                                            <th scope="col" class="ps-0">Email</th>
+                                            <th scope="col" class="ps-0">City</th>
+                                            <th scope="col" class="ps-0">Status</th>
+                                            <th scope="col" class="ps-0">Description</th>
+                                            <th scope="col" class="ps-0">Action</th>
                                         </tr>
                                     </thead>
                                     <tbody class="table-group-divider">
+                                        <?php foreach ($rows as $index => $row) {
+                                        ?>
                                         <tr>
-                                        <th scope="row" class="ps-0 fw-medium">
-                                            <span class="table-link1 text-truncate d-block">Welcome to our
-                                            website</span>
-                                        </th>
-                                        <td>
-                                            <a href="javascript:void(0)" class="link-primary text-dark fw-medium d-block">/index.html</a>
-                                        </td>
-                                        <td class="text-center fw-medium">18,456</td>
-                                        <td class="text-center fw-medium">$2.40</td>
+                                            <td><?php echo $index + 1 ?></td>
+                                            <td><?php echo $row['role'];?></td>
+                                            <td><?php echo $row['birthday'];?></td>
+                                            <td><?php echo $row['website'];?></td>
+                                            <td><?php echo $row['degree'];?></td>
+                                            <td><?php echo $row['phone'];?></td>
+                                            <td><?php echo $row['email'];?></td>
+                                            <td><?php echo $row['city'];?></td>
+                                            <td><?php echo $row['status'];?></td>
+                                            <td><?php echo $row['description'];?></td>
+                                            <td>
+                                                <a href="create-about.php?edit=<?php echo $row['id']?>" class="btn btn-success btn-sm">Edit</a>
+                                                <a onclick="return confirm('Are you sure want to delete this data?')" href="about.php?delete=<?php echo $row['id']?>" class="btn btn-danger btn-sm">Delete</a>
+                                            </td>
                                         </tr>
-                                        <tr>
-                                        <th scope="row" class="ps-0 fw-medium">
-                                            <span class="table-link1 text-truncate d-block">Modern Admin
-                                            Dashboard Template</span>
-                                        </th>
-                                        <td>
-                                            <a href="javascript:void(0)" class="link-primary text-dark fw-medium d-block">/dashboard</a>
-                                        </td>
-                                        <td class="text-center fw-medium">17,452</td>
-                                        <td class="text-center fw-medium">$0.97</td>
-                                        </tr>
-                                        <tr>
-                                        <th scope="row" class="ps-0 fw-medium">
-                                            <span class="table-link1 text-truncate d-block">Explore our
-                                            product catalog</span>
-                                        </th>
-                                        <td>
-                                            <a href="javascript:void(0)" class="link-primary text-dark fw-medium d-block">/product-checkout</a>
-                                        </td>
-                                        <td class="text-center fw-medium">12,180</td>
-                                        <td class="text-center fw-medium">$7,50</td>
-                                        </tr>
-                                        <tr>
-                                        <th scope="row" class="ps-0 fw-medium">
-                                            <span class="table-link1 text-truncate d-block">Comprehensive
-                                            User Guide</span>
-                                        </th>
-                                        <td>
-                                            <a href="javascript:void(0)" class="link-primary text-dark fw-medium d-block">/docs</a>
-                                        </td>
-                                        <td class="text-center fw-medium">800</td>
-                                        <td class="text-center fw-medium">$5,50</td>
-                                        </tr>
-                                        <tr>
-                                        <th scope="row" class="ps-0 fw-medium border-0">
-                                            <span class="table-link1 text-truncate d-block">Check out our
-                                            services</span>
-                                        </th>
-                                        <td class="border-0">
-                                            <a href="javascript:void(0)" class="link-primary text-dark fw-medium d-block">/services</a>
-                                        </td>
-                                        <td class="text-center fw-medium border-0">1300</td>
-                                        <td class="text-center fw-medium border-0">$2,15</td>
-                                        </tr>
+                                        <?php
+                                        }
+                                        ?>
                                     </tbody>
                                 </table>
                             </div>
@@ -391,98 +374,98 @@ if (!isset($_SESSION['NAME'])) {
                 </div> -->
             </div>
             <div class="col-lg-4">
-            <div class="card overflow-hidden hover-img">
-                <div class="position-relative">
-                <a href="javascript:void(0)">
-                    <img src="portofolio/src/assets/images/blog/blog-img1.jpg" class="card-img-top" alt="matdash-img">
-                </a>
-                <span class="badge text-bg-light text-dark fs-2 lh-sm mb-9 me-9 py-1 px-2 fw-semibold position-absolute bottom-0 end-0">2
-                    min Read</span>
-                <img src="portofolio/src/assets/images/profile/user-3.jpg" alt="matdash-img" class="img-fluid rounded-circle position-absolute bottom-0 start-0 mb-n9 ms-9" width="40" height="40" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Georgeanna Ramero">
-                </div>
-                <div class="card-body p-4">
-                <span class="badge text-bg-light fs-2 py-1 px-2 lh-sm  mt-3">Social</span>
-                <a class="d-block my-4 fs-5 text-dark fw-semibold link-primary" href="">As yen tumbles, gadget-loving
-                    Japan goes
-                    for secondhand iPhones</a>
-                <div class="d-flex align-items-center gap-4">
-                    <div class="d-flex align-items-center gap-2">
-                    <i class="ti ti-eye text-dark fs-5"></i>9,125
+                <!-- <div class="card overflow-hidden hover-img">
+                    <div class="position-relative">
+                    <a href="javascript:void(0)">
+                        <img src="portofolio/src/assets/images/blog/blog-img1.jpg" class="card-img-top" alt="matdash-img">
+                    </a>
+                    <span class="badge text-bg-light text-dark fs-2 lh-sm mb-9 me-9 py-1 px-2 fw-semibold position-absolute bottom-0 end-0">2
+                        min Read</span>
+                    <img src="portofolio/src/assets/images/profile/user-3.jpg" alt="matdash-img" class="img-fluid rounded-circle position-absolute bottom-0 start-0 mb-n9 ms-9" width="40" height="40" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Georgeanna Ramero">
                     </div>
-                    <div class="d-flex align-items-center gap-2">
-                    <i class="ti ti-message-2 text-dark fs-5"></i>3
+                    <div class="card-body p-4">
+                    <span class="badge text-bg-light fs-2 py-1 px-2 lh-sm  mt-3">Social</span>
+                    <a class="d-block my-4 fs-5 text-dark fw-semibold link-primary" href="">As yen tumbles, gadget-loving
+                        Japan goes
+                        for secondhand iPhones</a>
+                    <div class="d-flex align-items-center gap-4">
+                        <div class="d-flex align-items-center gap-2">
+                        <i class="ti ti-eye text-dark fs-5"></i>9,125
+                        </div>
+                        <div class="d-flex align-items-center gap-2">
+                        <i class="ti ti-message-2 text-dark fs-5"></i>3
+                        </div>
+                        <div class="d-flex align-items-center fs-2 ms-auto">
+                        <i class="ti ti-point text-dark"></i>Mon, Dec 19
+                        </div>
                     </div>
-                    <div class="d-flex align-items-center fs-2 ms-auto">
-                    <i class="ti ti-point text-dark"></i>Mon, Dec 19
-                    </div>
-                </div>
-                </div>
-            </div>
-            </div>
-            <div class="col-lg-4">
-            <div class="card overflow-hidden hover-img">
-                <div class="position-relative">
-                <a href="javascript:void(0)">
-                    <img src="portofolio/src/assets/images/blog/blog-img2.jpg" class="card-img-top" alt="matdash-img">
-                </a>
-                <span class="badge text-bg-light text-dark fs-2 lh-sm mb-9 me-9 py-1 px-2 fw-semibold position-absolute bottom-0 end-0">2
-                    min Read</span>
-                <img src="portofolio/src/assets/images/profile/user-2.jpg" alt="matdash-img" class="img-fluid rounded-circle position-absolute bottom-0 start-0 mb-n9 ms-9" width="40" height="40" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Georgeanna Ramero">
-                </div>
-                <div class="card-body p-4">
-                <span class="badge text-bg-light fs-2 py-1 px-2 lh-sm  mt-3">Gadget</span>
-                <a class="d-block my-4 fs-5 text-dark fw-semibold link-primary" href="">Intel loses bid to revive
-                    antitrust case
-                    against patent foe Fortress</a>
-                <div class="d-flex align-items-center gap-4">
-                    <div class="d-flex align-items-center gap-2">
-                    <i class="ti ti-eye text-dark fs-5"></i>4,150
-                    </div>
-                    <div class="d-flex align-items-center gap-2">
-                    <i class="ti ti-message-2 text-dark fs-5"></i>38
-                    </div>
-                    <div class="d-flex align-items-center fs-2 ms-auto">
-                    <i class="ti ti-point text-dark"></i>Sun, Dec 18
                     </div>
                 </div>
                 </div>
-            </div>
-            </div>
-            <div class="col-lg-4">
-            <div class="card overflow-hidden hover-img">
-                <div class="position-relative">
-                <a href="javascript:void(0)">
-                    <img src="portofolio/src/assets/images/blog/blog-img3.jpg" class="card-img-top" alt="matdash-img">
-                </a>
-                <span class="badge text-bg-light text-dark fs-2 lh-sm mb-9 me-9 py-1 px-2 fw-semibold position-absolute bottom-0 end-0">2
-                    min Read</span>
-                <img src="portofolio/src/assets/images/profile/user-3.jpg" alt="matdash-img" class="img-fluid rounded-circle position-absolute bottom-0 start-0 mb-n9 ms-9" width="40" height="40" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Georgeanna Ramero">
-                </div>
-                <div class="card-body p-4">
-                <span class="badge text-bg-light fs-2 py-1 px-2 lh-sm  mt-3">Health</span>
-                <a class="d-block my-4 fs-5 text-dark fw-semibold link-primary" href="">COVID outbreak deepens as more
-                    lockdowns
-                    loom in China</a>
-                <div class="d-flex align-items-center gap-4">
-                    <div class="d-flex align-items-center gap-2">
-                    <i class="ti ti-eye text-dark fs-5"></i>9,480
+                <div class="col-lg-4">
+                <div class="card overflow-hidden hover-img">
+                    <div class="position-relative">
+                    <a href="javascript:void(0)">
+                        <img src="portofolio/src/assets/images/blog/blog-img2.jpg" class="card-img-top" alt="matdash-img">
+                    </a>
+                    <span class="badge text-bg-light text-dark fs-2 lh-sm mb-9 me-9 py-1 px-2 fw-semibold position-absolute bottom-0 end-0">2
+                        min Read</span>
+                    <img src="portofolio/src/assets/images/profile/user-2.jpg" alt="matdash-img" class="img-fluid rounded-circle position-absolute bottom-0 start-0 mb-n9 ms-9" width="40" height="40" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Georgeanna Ramero">
                     </div>
-                    <div class="d-flex align-items-center gap-2">
-                    <i class="ti ti-message-2 text-dark fs-5"></i>12
+                    <div class="card-body p-4">
+                    <span class="badge text-bg-light fs-2 py-1 px-2 lh-sm  mt-3">Gadget</span>
+                    <a class="d-block my-4 fs-5 text-dark fw-semibold link-primary" href="">Intel loses bid to revive
+                        antitrust case
+                        against patent foe Fortress</a>
+                    <div class="d-flex align-items-center gap-4">
+                        <div class="d-flex align-items-center gap-2">
+                        <i class="ti ti-eye text-dark fs-5"></i>4,150
+                        </div>
+                        <div class="d-flex align-items-center gap-2">
+                        <i class="ti ti-message-2 text-dark fs-5"></i>38
+                        </div>
+                        <div class="d-flex align-items-center fs-2 ms-auto">
+                        <i class="ti ti-point text-dark"></i>Sun, Dec 18
+                        </div>
                     </div>
-                    <div class="d-flex align-items-center fs-2 ms-auto">
-                    <i class="ti ti-point text-dark"></i>Sat, Dec 17
                     </div>
                 </div>
                 </div>
-            </div>
-            </div>
-            <div class="py-6 px-6 text-center">
-            <p class="mb-0 fs-4">Design and Developed by <a href="https://adminmart.com/" target="_blank"
-                class="pe-1 text-primary text-decoration-underline">AdminMart.com</a>Distributed by <a href="https://themewagon.com/" target="_blank"
-                class="pe-1 text-primary text-decoration-underline">ThemeWagon</a></p>
-            </div>
-        </div>
+                <div class="col-lg-4">
+                <div class="card overflow-hidden hover-img">
+                    <div class="position-relative">
+                    <a href="javascript:void(0)">
+                        <img src="portofolio/src/assets/images/blog/blog-img3.jpg" class="card-img-top" alt="matdash-img">
+                    </a>
+                    <span class="badge text-bg-light text-dark fs-2 lh-sm mb-9 me-9 py-1 px-2 fw-semibold position-absolute bottom-0 end-0">2
+                        min Read</span>
+                    <img src="portofolio/src/assets/images/profile/user-3.jpg" alt="matdash-img" class="img-fluid rounded-circle position-absolute bottom-0 start-0 mb-n9 ms-9" width="40" height="40" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Georgeanna Ramero">
+                    </div>
+                    <div class="card-body p-4">
+                    <span class="badge text-bg-light fs-2 py-1 px-2 lh-sm  mt-3">Health</span>
+                    <a class="d-block my-4 fs-5 text-dark fw-semibold link-primary" href="">COVID outbreak deepens as more
+                        lockdowns
+                        loom in China</a>
+                    <div class="d-flex align-items-center gap-4">
+                        <div class="d-flex align-items-center gap-2">
+                        <i class="ti ti-eye text-dark fs-5"></i>9,480
+                        </div>
+                        <div class="d-flex align-items-center gap-2">
+                        <i class="ti ti-message-2 text-dark fs-5"></i>12
+                        </div>
+                        <div class="d-flex align-items-center fs-2 ms-auto">
+                        <i class="ti ti-point text-dark"></i>Sat, Dec 17
+                        </div>
+                    </div>
+                    </div>
+                </div>
+                </div>
+                <div class="py-6 px-6 text-center">
+                <p class="mb-0 fs-4">Design and Developed by <a href="https://adminmart.com/" target="_blank"
+                    class="pe-1 text-primary text-decoration-underline">AdminMart.com</a>Distributed by <a href="https://themewagon.com/" target="_blank"
+                    class="pe-1 text-primary text-decoration-underline">ThemeWagon</a></p>
+                </div>
+            </div> -->
         </div>
     </div>
     <script src="portofolio/src/assets/libs/jquery/dist/jquery.min.js"></script>
