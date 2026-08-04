@@ -8,8 +8,73 @@ if (!isset($_SESSION['NAME'])) {
     exit();
 }
 
+$id = isset($_GET['edit']) ? $_GET['edit'] : '';
 $query = mysqli_query($conn, "SELECT * FROM about ORDER BY id DESC");
-$rows = mysqli_fetch_all($query, MYSQLI_ASSOC);
+$row = mysqli_fetch_assoc($query);
+
+if (isset($_POST['save'])) {
+    $role = $_POST['role'];
+    $birthday = $_POST['birthday'];
+    $website = $_POST['website'];
+    $degree = $_POST['degree'];
+    $phone = $_POST['phone'];
+    $email = $_POST['email'];
+    $city = $_POST['city'];
+    $status = $_POST['status'];
+    $description = $_POST['description'];
+    $image = $_FILES['image'];
+
+    if ($image['error'] == 0) {
+        $filename = uniqid() . " " . basename($image['name']);
+        $filepath = "assets/img/" . $filename;
+
+        if ($id && !empty($row['image'])){
+            $old_picture_path = "assets/img/" . $row['image'];
+            if(file_exists($old_picture_path)){
+                unlink($old_picture_path);
+            }
+        }
+
+        move_uploaded_file($image['tmp_name'],  $filepath);
+
+        if ($id) {
+            $update = mysqli_query($conn, "UPDATE about SET 
+            role = '$role', 
+            birthday = '$birthday',
+            website = '$website',
+            degree = '$degree',
+            phone = '$phone',
+            email = '$email',
+            city = '$city',
+            status = '$status',
+            description = '$description',
+            image = '$filename'
+            ");
+
+            header("location:about.php?update=berhasil");
+        } else {
+            $insert = mysqli_query($conn, "INSERT INTO about 
+            (role, birthday, website, degree, phone, email, city, status, description, image) VALUES 
+            ('$role', '$birthday', '$website', '$degree', '$phone', '$email', '$city', '$status', '$description', '$filename')");
+
+            header("location:about.php?insert=berhasil");
+        }
+    } else {
+        $update = mysqli_query($conn, "UPDATE about SET 
+            role = '$role', 
+            birthday = '$birthday',
+            website = '$website',
+            degree = '$degree',
+            phone = '$phone',
+            email = '$email',
+            city = '$city',
+            status = '$status',
+            description = '$description'
+            ");
+
+        header("location:about.php?update=berhasil");
+    }
+}
 
 if (isset($_GET['delete'])) {
     $delete = $_GET['delete'];
@@ -270,10 +335,10 @@ if (isset($_GET['delete'])) {
                         <div class="card">
                             <div class="card-body">
                                 <h5 class="card-title">About</h5>
-                                <form action="" method="post">
+                                <form action="" method="post" enctype="multipart/form-data">
                                     <div class="mb-3">
                                         <label for="exampleInputEmail1" class="form-label">Role</label>
-                                        <input type="text" name="text" class="form-control" id="text" aria-describedby="emailHelp" required value="<?php echo ($id) ? $row['role'] : ''?>">
+                                        <input type="text" name="role" class="form-control" id="role" aria-describedby="emailHelp" required value="<?php echo ($id) ? $row['role'] : ''?>">
                                     </div>
                                     <div class="mb-4">
                                         <label for="exampleInputPassword1" class="form-label">Birthday</label>
@@ -281,7 +346,7 @@ if (isset($_GET['delete'])) {
                                     </div>
                                     <div class="mb-4">
                                         <label for="exampleInputPassword1" class="form-label">Website</label>
-                                        <input type="url" name="Website" class="form-control" id="Website" required value="<?php echo ($id) ? $row['website'] : ''?>">
+                                        <input type="url" name="website" class="form-control" id="website" required value="<?php echo ($id) ? $row['website'] : ''?>">
                                     </div>
                                     <div class="mb-4">
                                         <label for="exampleInputPassword1" class="form-label">Degree</label>
@@ -296,19 +361,29 @@ if (isset($_GET['delete'])) {
                                         <input type="email" name="email" class="form-control" id="email" required value="<?php echo ($id) ? $row['email'] : ''?>">
                                     </div>
                                     <div class="mb-4">
-                                        <label for="exampleInputPassword1" class="form-label">Status</label>
-                                        <input type="email" name="status" class="form-control" id="status">
+                                        <label for="exampleInputPassword1" class="form-label">City</label>
+                                        <input type="text" name="city" class="form-control" id="city" required value="<?php echo ($id) ? $row['city'] : ''?>">
+                                    </div>
+                                    <div class="form-check mb-4">
+                                        <input type="radio" name="status" id="status" value="1" checked <?php echo ($id) && $row['status'] == 1 ? "checked" : '' ?>>
+                                        <label for="exampleInputPassword1" class="form-label">Active</label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input type="radio" name="status" id="status" value="0" <?php echo ($id) && $row['status'] == 0 ? "checked" : '' ?>>
+                                        <label for="exampleInputPassword1" class="form-label">Non-Active</label>
+                                    </div>
+                                    <div class="mb-4">
+                                        <label for="exampleInputPassword1" class="form-label">Image</label>
+                                        <input type="file" name="image" src="" alt="" id="image" value="<?php echo ($id) ? $row['image'] : ''?>">
                                     </div>
                                     <div class="mb-4">
                                         <label for="exampleInputPassword1" class="form-label">Description</label>
                                         <textarea name="description" id="" class="form-control"><?php echo ($id) ? $row['description'] : ''?></textarea>
                                     </div>
                                     
-                                    <button type="submit" class="btn btn-primary w-100 py-8 fs-4 mb-4" name="login">Sign In</button>
-                                    <div class="d-flex align-items-center justify-content-center">
-                                        <p class="fs-4 mb-0 fw-bold">New to SeoDash?</p>
-                                        <a class="text-primary fw-bold ms-2" href="./authentication-register.html">Create an account</a>
-                                    </div>
+                                    <button type="submit" class="btn btn-primary w-25 py-8 fs-4 mb-4" name="save">Save</button>
+                                    <button type="reset" class="btn btn-outline-primary w-25 py-8 fs-4 mb-4" name="reset">Reset</button>
+                                    
                                 </form>
                             </div>
                         </div>

@@ -13,6 +13,14 @@ $rows = mysqli_fetch_all($query, MYSQLI_ASSOC);
 
 if (isset($_GET['delete'])){
     $delete = $_GET ['delete'];
+    $img = mysqli_query($conn, "SELECT image FROM about WHERE id = '$delete'");
+    $rowimg = mysqli_fetch_assoc($img);
+    if ($delete && !empty($rowimg['image'])){
+        $old_picture_path = "assets/img/" . $rowimg['image'];
+        if(file_exists($old_picture_path)){
+            unlink($old_picture_path);
+        }
+    }
     $delete = mysqli_query ($conn, "DELETE FROM about WHERE id='$delete'");
     header("location:about.php?hapus=berhasil");
 }
@@ -274,33 +282,37 @@ if (isset($_GET['delete'])){
                                 <table class="table text-nowrap align-middle mb-0">
                                     <thead>
                                         <tr class="border-2 border-bottom border-primary border-0"> 
-                                            <th scope="col" class="ps-0">No</th>
-                                            <th scope="col" class="ps-0">Role</th>
-                                            <th scope="col" class="ps-0">Birthday</th>
-                                            <th scope="col" class="ps-0">Website</th>
-                                            <th scope="col" class="ps-0">Degree</th>
-                                            <th scope="col" class="ps-0">Phone</th>
-                                            <th scope="col" class="ps-0">Email</th>
-                                            <th scope="col" class="ps-0">City</th>
-                                            <th scope="col" class="ps-0">Status</th>
-                                            <th scope="col" class="ps-0">Description</th>
-                                            <th scope="col" class="ps-0">Action</th>
+                                            <th scope="col" class="text-center ps-0">No</th>
+                                            <th scope="col" class="text-center ps-0">Role</th>
+                                            <th scope="col" class="text-center ps-0">Birthday</th>
+                                            <th scope="col" class="text-center ps-0">Website</th>
+                                            <th scope="col" class="text-center ps-0">Degree</th>
+                                            <th scope="col" class="text-center ps-0">Phone</th>
+                                            <th scope="col" class="text-center ps-0">Email</th>
+                                            <th scope="col" class="text-center ps-0">City</th>
+                                            <th scope="col" class="text-center ps-0">Status</th>
+                                            <th scope="col" class="text-center ps-0">Image</th>
+                                            <th scope="col" class="text-center ps-0">Description</th>
+                                            <th scope="col" class="text-center ps-0">Action</th>
                                         </tr>
                                     </thead>
                                     <tbody class="table-group-divider">
                                         <?php foreach ($rows as $index => $row) {
                                         ?>
                                         <tr>
-                                            <td><?php echo $index + 1 ?></td>
-                                            <td><?php echo $row['role'];?></td>
-                                            <td><?php echo $row['birthday'];?></td>
-                                            <td><?php echo $row['website'];?></td>
-                                            <td><?php echo $row['degree'];?></td>
-                                            <td><?php echo $row['phone'];?></td>
-                                            <td><?php echo $row['email'];?></td>
-                                            <td><?php echo $row['city'];?></td>
-                                            <td><?php echo $row['status'];?></td>
-                                            <td><?php echo $row['description'];?></td>
+                                            <td class="text-center fw-medium"><?php echo $index + 1 ?></td>
+                                            <td class="text-center fw-medium"><?php echo $row['role'];?></td>
+                                            <td class="text-center fw-medium"><?php echo $row['birthday'];?></td>
+                                            <td class="text-center fw-medium"><?php echo $row['website'];?></td>
+                                            <td class="text-center fw-medium"><?php echo $row['degree'];?></td>
+                                            <td class="text-center fw-medium"><?php echo $row['phone'];?></td>
+                                            <td class="text-center fw-medium"><?php echo $row['email'];?></td>
+                                            <td class="text-center fw-medium"><?php echo $row['city'];?></td>
+                                            <td class="text-center fw-medium"><?php echo $row['status'];?></td>
+                                            <td class="text-center fw-medium">
+                                                <img src="assets/img/<?php echo $row['image'];?>" alt="" width="176">
+                                            </td>
+                                            <td class="text-center fw-medium"><?php echo $row['description'];?></td>
                                             <td>
                                                 <a href="create-about.php?edit=<?php echo $row['id']?>" class="btn btn-success btn-sm">Edit</a>
                                                 <a onclick="return confirm('Are you sure want to delete this data?')" href="about.php?delete=<?php echo $row['id']?>" class="btn btn-danger btn-sm">Delete</a>
