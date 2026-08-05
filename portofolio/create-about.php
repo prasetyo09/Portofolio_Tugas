@@ -272,8 +272,7 @@ if (isset($_GET['delete'])) {
                     </ul>
                     <div class="navbar-collapse justify-content-end px-0" id="navbarNav">
                         <ul class="navbar-nav flex-row ms-auto align-items-center justify-content-end">
-                            <a href="create-about.php" target="_blank"
-                                class="btn btn-primary me-2"><span class="d-none d-md-block">Create New Data</span> <span class="d-block d-md-none">Pro</span></a>
+                            
                             <!-- <a href="#" target="_blank"
                     class="btn btn-success"><span class="d-none d-md-block">Download Free </span> <span class="d-block d-md-none">Free</span></a> -->
                             <li class="nav-item dropdown">

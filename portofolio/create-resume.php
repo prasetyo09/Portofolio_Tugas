@@ -9,7 +9,7 @@ if (!isset($_SESSION['NAME'])) {
 }
 
 $id = isset($_GET['edit']) ? $_GET['edit'] : '';
-$query = mysqli_query($conn, "SELECT * FROM resume ORDER BY id DESC");
+$query = mysqli_query($conn, "SELECT * FROM resume WHERE id = '$id'");
 $row = mysqli_fetch_assoc($query);
 
 if (isset($_POST['save'])) {
@@ -28,8 +28,8 @@ if (isset($_POST['save'])) {
         institution = '$institution',
         description = '$description',
         desc_detail = '$desc_detail'
+        WHERE id='$id'
         ");
-
         header("location:resume.php?update=berhasil");
     } else {
         $insert = mysqli_query($conn, "INSERT INTO resume 
@@ -38,14 +38,6 @@ if (isset($_POST['save'])) {
         header("location:resume.php?insert=berhasil");
     }
 }
-
-
-if (isset($_GET['delete'])) {
-    $delete = $_GET['delete'];
-    $delete = mysqli_query($conn, "DELETE FROM about WHERE id='$delete'");
-    header("location:about.php?hapus=berhasil");
-}
-?>
 ?>
 <!doctype html>
 <html lang="en">
@@ -64,72 +56,9 @@ if (isset($_GET['delete'])) {
         data-sidebar-position="fixed" data-header-position="fixed">
         <!-- Sidebar Start -->
         <aside class="left-sidebar">
-            <!-- Sidebar scroll-->
-            <div>
-                <div class="brand-logo d-flex align-items-center justify-content-between">
-                    <a href="./index.html" class="text-nowrap logo-img">
-                        <img src="portofolio/src/assets/images/logos/logo-light.svg" alt="" />
-                    </a>
-                    <div class="close-btn d-xl-none d-block sidebartoggler cursor-pointer" id="sidebarCollapse">
-                        <i class="ti ti-x fs-8"></i>
-                    </div>
-                </div>
-                <!-- Sidebar navigation-->
-                <nav class="sidebar-nav scroll-sidebar" data-simplebar="">
-                    <ul id="sidebarnav">
-                        <li class="nav-small-cap">
-                            <i class="ti ti-dots nav-small-cap-icon fs-6"></i>
-                            <span class="hide-menu">Home</span>
-                        </li>
-                        <li class="sidebar-item">
-                            <a class="sidebar-link" href="dashboard.php" aria-expanded="false">
-                                <span>
-                                    <iconify-icon icon="solar:home-smile-bold-duotone" class="fs-6"></iconify-icon>
-                                </span>
-                                <span class="hide-menu">Dashboard</span>
-                            </a>
-                        </li>
-                        <li class="sidebar-item">
-                            <a class="sidebar-link" href="about.php" aria-expanded="false">
-                                <span>
-                                    <iconify-icon icon="solar:home-smile-bold-duotone" class="fs-6"></iconify-icon>
-                                </span>
-                                <span class="hide-menu">About</span>
-                            </a>
-                        </li>
-                        <li class="sidebar-item">
-                            <a class="sidebar-link" href="resume.php" aria-expanded="false">
-                                <span>
-                                    <iconify-icon icon="solar:home-smile-bold-duotone" class="fs-6"></iconify-icon>
-                                </span>
-                                <span class="hide-menu">Resume</span>
-                            </a>
-                        </li>
-                        <li class="sidebar-item">
-                            <a class="sidebar-link" href="contact.php" aria-expanded="false">
-                                <span>
-                                    <iconify-icon icon="solar:home-smile-bold-duotone" class="fs-6"></iconify-icon>
-                                </span>
-                                <span class="hide-menu">Contact</span>
-                            </a>
-                        </li>
-                    </ul>
-                    <!-- <div class="unlimited-access hide-menu bg-primary-subtle position-relative mb-7 mt-7 rounded-3"> 
-                <div class="d-flex">
-                    <div class="unlimited-access-title me-3">
-                        <h6 class="fw-semibold fs-4 mb-6 text-dark w-75">Upgrade to pro</h6>
-                        <a href="#" target="_blank"
-                        class="btn btn-primary fs-2 fw-semibold lh-sm">Buy Pro</a>
-                    </div>
-                    <div class="unlimited-access-img">
-                        <img src="portofolio/src/assets/images/backgrounds/rocket.png" alt="" class="img-fluid">
-                    </div>
-                </div>
-            </div> -->
-                </nav>
-                <!-- End Sidebar navigation -->
-            </div>
-            <!-- End Sidebar scroll-->
+            <?php
+            include "inc/sidebar.php";
+            ?>
         </aside>
         <!--  Sidebar End -->
         <!--  Main wrapper -->
@@ -213,7 +142,7 @@ if (isset($_GET['delete'])) {
                         <div class="card">
                             <div class="card-body">
                                 <h5 class="card-title">About</h5>
-                                <form action="" method="post" enctype="multipart/form-data">
+                                <form action="" method="post">
                                     <div class="mb-3">
                                         <label for="exampleInputEmail1" class="form-label">Title</label>
                                         <input type="text" name="title" class="form-control" id="title" aria-describedby="emailHelp" required value="<?php echo ($id) ? $row['title'] : ''?>">
@@ -401,6 +330,8 @@ if (isset($_GET['delete'])) {
             </div> -->
                     </div>
                 </div>
+        </div>
+    </div>            
     <script>
         document.addEventListener('DOMContentLoaded', function () {
         const year_start = document.getElementById("year_start");

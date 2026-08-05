@@ -1,3 +1,11 @@
+<?php
+include "../config/koneksi.php";
+session_start();
+session_regenerate_id();
+
+$q_profile = mysqli_query($conn, "SELECT * FROM home ORDER BY id DESC LIMIT 1");
+$profile = mysqli_fetch_assoc($q_profile);
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -48,15 +56,16 @@
     <a href="index.html" class="logo d-flex align-items-center justify-content-center">
       <!-- Uncomment the line below if you also wish to use an image logo -->
       <!-- <img src="assets/img/logo.png" alt=""> -->
-      <h1 class="sitename">Alex Smith</h1>
+      <h1 class="sitename"><?php echo $profile['name']?></h1>
     </a>
 
     <div class="social-links text-center">
-      <a href="#" class="twitter"><i class="bi bi-twitter-x"></i></a>
-      <a href="#" class="facebook"><i class="bi bi-facebook"></i></a>
-      <a href="#" class="instagram"><i class="bi bi-instagram"></i></a>
-      <a href="#" class="google-plus"><i class="bi bi-skype"></i></a>
-      <a href="#" class="linkedin"><i class="bi bi-linkedin"></i></a>
+      <a href="<?php echo $profile['email_link']?>" class="email"><i class="bi bi-envelope"></i></a>
+      <a href="<?php echo $profile['github_link']?>" class="github"><i class="bi bi-github"></i></a>
+      <a href="<?php echo $profile['linkedin_link']?>" class="linkedin"><i class="bi bi-linkedin"></i></a>
+      <a href="<?php echo $profile['ig_link']?>" class="instagram"><i class="bi bi-instagram"></i></a>
+      <a href="<?php echo $profile['yt_link']?>" class="youtube"><i class="bi bi-youtube"></i></a>
+      
     </div>
 
     <nav id="navmenu" class="navmenu">
@@ -97,8 +106,8 @@
       <img src="assets/img/hero-bg.jpg" alt="" data-aos="fade-in" class="">
 
       <div class="container" data-aos="fade-up" data-aos-delay="100">
-        <h2>Alex Smith</h2>
-        <p>I'm <span class="typed" data-typed-items="Designer, Developer, Freelancer, Photographer">Designer</span><span class="typed-cursor typed-cursor--blink" aria-hidden="true"></span><span class="typed-cursor typed-cursor--blink" aria-hidden="true"></span></p>
+        <h2><?php echo $profile['name']?></h2>
+        <p>I'm <span class="typed" data-typed-items="Designer, Web Developer, Freelancer, Photographer">Designer</span><span class="typed-cursor typed-cursor--blink" aria-hidden="true"></span><span class="typed-cursor typed-cursor--blink" aria-hidden="true"></span></p>
       </div>
 
     </section><!-- /Hero Section -->

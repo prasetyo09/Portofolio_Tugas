@@ -1,30 +1,26 @@
 <?php
-include "config/koneksi.php";
 session_start();
 session_regenerate_id();
+
+include "config/koneksi.php";
 
 if (!isset($_SESSION['NAME'])) {
     header("location:index.php");
     exit();
 }
 
-$query = mysqli_query($conn, "SELECT * FROM about ORDER BY id DESC");
-$rows = mysqli_fetch_all($query, MYSQLI_ASSOC);
+//tampil semua data dari user
+$query = mysqli_query($conn, "SELECT * FROM skills ORDER BY id DESC");
+$rows  = mysqli_fetch_all($query, MYSQLI_ASSOC);
 
+//jika params delete ada
 if (isset($_GET['delete'])){
     $delete = $_GET ['delete'];
-    $img = mysqli_query($conn, "SELECT image FROM about WHERE id = '$delete'");
-    $rowimg = mysqli_fetch_assoc($img);
-    if ($delete && !empty($rowimg['image'])){
-        $old_picture_path = "assets/img/" . $rowimg['image'];
-        if(file_exists($old_picture_path)){
-            unlink($old_picture_path);
-        }
-    }
-    $delete = mysqli_query ($conn, "DELETE FROM about WHERE id='$delete'");
-    header("location:about.php?hapus=berhasil");
+    $delete = mysqli_query ($conn, "DELETE FROM skills WHERE id='$delete'");
+    header("location:user.php?hapus=berhasil");
 }
 ?>
+
 <!doctype html>
 <html lang="en">
 
@@ -214,8 +210,8 @@ if (isset($_GET['delete'])){
             </ul>
             <div class="navbar-collapse justify-content-end px-0" id="navbarNav">
                 <ul class="navbar-nav flex-row ms-auto align-items-center justify-content-end">
-                <a href="create-about.php" target="_blank"
-                    class="btn btn-primary me-2"><span class="d-none d-md-block">Create New Data</span> <span class="d-block d-md-none">Pro</span></a>
+                <a href="create-skills.php" target="_blank"
+                    class="btn btn-primary me-2"><span class="d-none d-md-block">Create New Skills</span> <span class="d-block d-md-none">Pro</span></a>
                 <!-- <a href="#" target="_blank"
                     class="btn btn-success"><span class="d-none d-md-block">Download Free </span> <span class="d-block d-md-none">Free</span></a> -->
                 <li class="nav-item dropdown">
@@ -282,16 +278,8 @@ if (isset($_GET['delete'])){
                                     <thead>
                                         <tr class="border-2 border-bottom border-primary border-0"> 
                                             <th scope="col" class="text-center ps-0">No</th>
-                                            <th scope="col" class="text-center ps-0">Role</th>
-                                            <th scope="col" class="text-center ps-0">Birthday</th>
-                                            <th scope="col" class="text-center ps-0">Website</th>
-                                            <th scope="col" class="text-center ps-0">Degree</th>
-                                            <th scope="col" class="text-center ps-0">Phone</th>
-                                            <th scope="col" class="text-center ps-0">Email</th>
-                                            <th scope="col" class="text-center ps-0">City</th>
-                                            <th scope="col" class="text-center ps-0">Status</th>
-                                            <th scope="col" class="text-center ps-0">Image</th>
-                                            <th scope="col" class="text-center ps-0">Description</th>
+                                            <th scope="col" class="text-center ps-0">Name</th>
+                                            <th scope="col" class="text-center ps-0">Progress</th>
                                             <th scope="col" class="text-center ps-0">Action</th>
                                         </tr>
                                     </thead>
@@ -300,21 +288,12 @@ if (isset($_GET['delete'])){
                                         ?>
                                         <tr>
                                             <td class="text-center fw-medium"><?php echo $index + 1 ?></td>
-                                            <td class="text-center fw-medium"><?php echo $row['role'];?></td>
-                                            <td class="text-center fw-medium"><?php echo $row['birthday'];?></td>
-                                            <td class="text-center fw-medium"><?php echo $row['website'];?></td>
-                                            <td class="text-center fw-medium"><?php echo $row['degree'];?></td>
-                                            <td class="text-center fw-medium"><?php echo $row['phone'];?></td>
-                                            <td class="text-center fw-medium"><?php echo $row['email'];?></td>
-                                            <td class="text-center fw-medium"><?php echo $row['city'];?></td>
-                                            <td class="text-center fw-medium"><?php echo $row['status'];?></td>
-                                            <td class="text-center fw-medium">
-                                                <img src="assets/img/<?php echo $row['image'];?>" alt="" width="176">
-                                            </td>
-                                            <td class="text-center fw-medium"><?php echo $row['description'];?></td>
+                                            <td class="text-center fw-medium"><?php echo $row['name'];?></td>
+                                            <td class="text-center fw-medium"><?php echo $row['progress' . "%"];?></td>
+                                            
                                             <td>
-                                                <a href="create-about.php?edit=<?php echo $row['id']?>" class="btn btn-success btn-sm">Edit</a>
-                                                <a onclick="return confirm('Are you sure want to delete this data?')" href="about.php?delete=<?php echo $row['id']?>" class="btn btn-danger btn-sm">Delete</a>
+                                                <a href="create-skills.php?edit=<?php echo $row['id']?>" class="btn btn-success btn-sm">Edit</a>
+                                                <a onclick="return confirm('Are you sure want to delete this data?')" href="skills.php?delete=<?php echo $row['id']?>" class="btn btn-danger btn-sm">Delete</a>
                                             </td>
                                         </tr>
                                         <?php

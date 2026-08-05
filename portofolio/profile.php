@@ -8,45 +8,32 @@ if (!isset($_SESSION['NAME'])) {
     exit();
 }
 
-$query = mysqli_query($conn, "SELECT * FROM about LIMIT 1");
+$query = mysqli_query($conn, "SELECT * FROM home LIMIT 1");
 $row = mysqli_fetch_assoc($query);
 
 if (isset($_POST['save'])) {
-    $role = $_POST['role'];
-    $birthday = $_POST['birthday'];
-    $website = $_POST['website'];
-    $degree = $_POST['degree'];
-    $phone = $_POST['phone'];
-    $email = $_POST['email'];
-    $city = $_POST['city'];
-    $status = $_POST['status'];
-    $description = $_POST['description'];
+    $name = $_POST['name'];
+    $email_link = $_POST['email_link'];
+    $github_link = $_POST['github_link'];
+    $linkedin_link = $_POST['linkedin_link'];
+    $ig_link = $_POST['ig_link'];
+    $yt_link = $_POST['yt_link'];
 
     if ($row) {
-        $update = mysqli_query($conn, "UPDATE about SET 
-        role = '$role', 
-        birthday = '$birthday',
-        website = '$website',
-        degree = '$degree',
-        phone = '$phone',
-        email = '$email',
-        city = '$city',
-        status = '$status',
-        description = '$description'
+        $update = mysqli_query($conn, "UPDATE home SET  
+        name = '$name',
+        email_link = '$email_link',
+        github_link = '$github_link',
+        linkedin_link = '$linkedin_link',
+        ig_link = '$ig_link',
+        yt_link = '$yt_link'
         ");
     } else {
-        $insert = mysqli_query($conn, "INSERT INTO about 
-        (role, birthday, website, degree, phone, email, city, status, description) VALUES 
-        ('$role', '$birthday', '$website', '$degree', '$phone', '$email', '$city', '$status', '$description')");
+        $insert = mysqli_query($conn, "INSERT INTO home 
+        (name, email_link, github_link, linkedin_link, ig_link, yt_link) VALUES 
+        ('$name', '$email_link', '$github_link', '$linkedin_link', '$ig_link', '$yt_link')");
     }
-
-    header("location:settings.php?update=berhasil");
-}
-
-if (isset($_GET['delete'])) {
-    $delete = $_GET['delete'];
-    $delete = mysqli_query($conn, "DELETE FROM about WHERE id='$delete'");
-    header("location:about.php?hapus=berhasil");
+    header("location:profile.php?update=berhasil");
 }
 ?>
 <!doctype html>
@@ -152,47 +139,31 @@ if (isset($_GET['delete'])) {
                     <div class="col-lg-12">
                         <div class="card">
                             <div class="card-body">
-                                <h5 class="card-title">About</h5>
+                                <h5 class="card-title">Profile</h5>
                                 <form action="" method="post" enctype="multipart/form-data">
                                     <div class="mb-3">
-                                        <label for="exampleInputEmail1" class="form-label">Role</label>
-                                        <input type="text" name="role" class="form-control" id="role" aria-describedby="emailHelp" required value="<?php echo isset($row) ? $row['role'] : '' ?>">
-                                    </div>
-                                    <div class="mb-4">
-                                        <label for="exampleInputPassword1" class="form-label">Birthday</label>
-                                        <input type="date" name="birthday" class="form-control" id="birthday" value="<?php echo ($row) ? $row['birthday'] : ''?>">
-                                    </div>
-                                    <div class="mb-4">
-                                        <label for="exampleInputPassword1" class="form-label">Website</label>
-                                        <input type="url" name="website" class="form-control" id="website" required value="<?php echo ($row) ? $row['website'] : ''?>">
-                                    </div>
-                                    <div class="mb-4">
-                                        <label for="exampleInputPassword1" class="form-label">Degree</label>
-                                        <input type="text" name="degree" class="form-control" id="degree" required value="<?php echo ($row) ? $row['degree'] : ''?>">
-                                    </div>
-                                    <div class="mb-4">
-                                        <label for="exampleInputPassword1" class="form-label">Phone</label>
-                                        <input type="text" name="phone" class="form-control" id="phone" required value="<?php echo ($row) ? $row['phone'] : ''?>">
+                                        <label for="exampleInputEmail1" class="form-label">Name</label>
+                                        <input type="text" name="name" class="form-control" id="name" aria-describedby="emailHelp" required value="<?php echo isset($row) ? $row['name'] : '' ?>" placeholder="Enter Your Name">
                                     </div>
                                     <div class="mb-4">
                                         <label for="exampleInputPassword1" class="form-label">Email</label>
-                                        <input type="email" name="email" class="form-control" id="email" required value="<?php echo ($row) ? $row['email'] : ''?>">
+                                        <input type="url" name="email_link" class="form-control" id="email_link" value="<?php echo ($row) ? $row['email_link'] : ''?>" placeholder="Enter Your Email Link">
                                     </div>
                                     <div class="mb-4">
-                                        <label for="exampleInputPassword1" class="form-label">City</label>
-                                        <input type="text" name="city" class="form-control" id="city" required value="<?php echo ($row) ? $row['city'] : ''?>">
-                                    </div>
-                                    <div class="form-check mb-4">
-                                        <input type="radio" name="status" id="status" value="1" checked <?php echo ($row) && $row['status'] == 1 ? "checked" : '' ?>>
-                                        <label for="exampleInputPassword1" class="form-label">Active</label>
-                                    </div>
-                                    <div class="form-check">
-                                        <input type="radio" name="status" id="status" value="0" <?php echo ($row) && $row['status'] == 0 ? "checked" : '' ?>>
-                                        <label for="exampleInputPassword1" class="form-label">Non-Active</label>
+                                        <label for="exampleInputPassword1" class="form-label">Github</label>
+                                        <input type="url" name="github_link" class="form-control" id="github_link" required value="<?php echo ($row) ? $row['github_link'] : ''?>" placeholder="Enter Your Github Link">
                                     </div>
                                     <div class="mb-4">
-                                        <label for="exampleInputPassword1" class="form-label">Description</label>
-                                        <textarea name="description" id="" class="form-control"><?php echo ($row) ? $row['description'] : ''?></textarea>
+                                        <label for="exampleInputPassword1" class="form-label">LinkedIn</label>
+                                        <input type="url" name="linkedin_link" class="form-control" id="linkedin_link" required value="<?php echo ($row) ? $row['linkedin_link'] : ''?>" placeholder="Enter Your LinkedIn Link">
+                                    </div>
+                                    <div class="mb-4">
+                                        <label for="exampleInputPassword1" class="form-label">Instagram</label>
+                                        <input type="url" name="ig_link" class="form-control" id="ig_link" required value="<?php echo ($row) ? $row['ig_link'] : ''?>" placeholder="Enter Your Instagram Link">
+                                    </div>
+                                    <div class="mb-4">
+                                        <label for="exampleInputPassword1" class="form-label">Youtube</label>
+                                        <input type="url" name="yt_link" class="form-control" id="yt_link" required value="<?php echo ($row) ? $row['yt_link'] : ''?>" placeholder="Enter Your Youtube Link">
                                     </div>
                                     
                                     <button type="submit" class="btn btn-primary w-25 py-8 fs-4 mb-4" name="save">Save</button>
@@ -355,14 +326,14 @@ if (isset($_GET['delete'])) {
             </div> -->
                     </div>
                 </div>
-                <script src="portofolio/src/assets/libs/jquery/dist/jquery.min.js"></script>
-                <script src="portofolio/src/assets/libs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-                <script src="portofolio/src/assets/libs/apexcharts/dist/apexcharts.min.js"></script>
-                <script src="portofolio/src/assets/libs/simplebar/dist/simplebar.js"></script>
-                <script src="portofolio/src/assets/js/sidebarmenu.js"></script>
-                <script src="portofolio/src/assets/js/app.min.js"></script>
-                <script src="portofolio/src/assets/js/dashboard.js"></script>
-                <script src="https://cdn.jsdelivr.net/npm/iconify-icon@1.0.8/dist/iconify-icon.min.js"></script>
+        <script src="portofolio/src/assets/libs/jquery/dist/jquery.min.js"></script>
+        <script src="portofolio/src/assets/libs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+        <script src="portofolio/src/assets/libs/apexcharts/dist/apexcharts.min.js"></script>
+        <script src="portofolio/src/assets/libs/simplebar/dist/simplebar.js"></script>
+        <script src="portofolio/src/assets/js/sidebarmenu.js"></script>
+        <script src="portofolio/src/assets/js/app.min.js"></script>
+        <script src="portofolio/src/assets/js/dashboard.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/iconify-icon@1.0.8/dist/iconify-icon.min.js"></script>
 </body>
 
 </html>
