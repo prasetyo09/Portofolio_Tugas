@@ -63,6 +63,14 @@
                     <span class="hide-menu">Contact</span>
                 </a>
             </li>
+            <li class="sidebar-item">
+                <a class="sidebar-link" href="contact-form.php" aria-expanded="false">
+                    <span>
+                        <iconify-icon icon="solar:home-smile-bold-duotone" class="fs-6"></iconify-icon>
+                    </span>
+                    <span class="hide-menu">Contact Form</span>
+                </a>
+            </li>
             <li class="nav-small-cap">
                 <i class="ti ti-dots nav-small-cap-icon fs-6"></i>
                 <span class="hide-menu">UI COMPONENTS</span>

@@ -1,46 +1,31 @@
 <?php
+include "config/koneksi.php";
 session_start();
 session_regenerate_id();
-
-include "config/koneksi.php";
 
 if (!isset($_SESSION['NAME'])) {
     header("location:index.php");
     exit();
 }
 
-// Jika tombol simpan ditekan, maka data akan tersimpan
-$id = isset($_GET['edit']) ? $_GET['edit'] : '';
-$query = mysqli_query($conn, "SELECT * FROM skills WHERE id ='$id'");
-$row  = mysqli_fetch_assoc($query);
+$query = mysqli_query($conn, "SELECT * FROM contact_form ORDER BY id DESC");
+$rows = mysqli_fetch_all($query, MYSQLI_ASSOC);
 
-if (isset($_POST['save'])) {
-    $name = $_POST['name'];
-    $progress = $_POST['progress'];
-  
-    if($id){
-        $update = mysqli_query($conn, "UPDATE skills SET name='$name', progress='$progress' WHERE id='$id'");
-        header("location:skills.php?update=berhasil");
-
-    } else{
-        $insert = mysqli_query($conn, "INSERT INTO skills (name, progress) VALUES ('$name', '$progress')");
-        header("location:skills.php?tambah=berhasil");
-    }
-    
+if (isset($_GET['delete'])){
+    $delete = $_GET ['delete'];
+    $delete = mysqli_query ($conn, "DELETE FROM contact_form WHERE id='$delete'");
+    header("location:contact-form.php?hapus=berhasil");
 }
-//tampil semua data dari user
-
 ?>
-
 <!doctype html>
 <html lang="en">
 
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>SeoDash Free Bootstrap Admin Template by Adminmart</title>
-    <link rel="shortcut icon" type="image/png" href="portofolio/src/assets/images/logos/seodashlogo.png" />
-    <link rel="stylesheet" href="portofolio/src/assets/css/styles.min.css" />
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>SeoDash Free Bootstrap Admin Template by Adminmart</title>
+  <link rel="shortcut icon" type="image/png" href="portofolio/src/assets/images/logos/seodashlogo.png" />
+  <link rel="stylesheet" href="portofolio/src/assets/css/styles.min.css" />
 </head>
 
 <body>
@@ -56,57 +41,58 @@ if (isset($_POST['save'])) {
         <!--  Sidebar End -->
         <!--  Main wrapper -->
         <div class="body-wrapper">
-            <!--  Header Start -->
-            <header class="app-header">
-                <nav class="navbar navbar-expand-lg navbar-light">
-                    <ul class="navbar-nav">
-                        <li class="nav-item d-block d-xl-none">
-                            <a class="nav-link sidebartoggler nav-icon-hover" id="headerCollapse" href="javascript:void(0)">
-                                <i class="ti ti-menu-2"></i>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link nav-icon-hover" href="javascript:void(0)">
-                                <i class="ti ti-bell-ringing"></i>
-                                <div class="notification bg-primary rounded-circle"></div>
-                            </a>
-                        </li>
-                    </ul>
-                    <div class="navbar-collapse justify-content-end px-0" id="navbarNav">
-                        <ul class="navbar-nav flex-row ms-auto align-items-center justify-content-end">
-                            <!-- <a href="#" target="_blank"
+        <!--  Header Start -->
+        <header class="app-header">
+            <nav class="navbar navbar-expand-lg navbar-light">
+            <ul class="navbar-nav">
+                <li class="nav-item d-block d-xl-none">
+                <a class="nav-link sidebartoggler nav-icon-hover" id="headerCollapse" href="javascript:void(0)">
+                    <i class="ti ti-menu-2"></i>
+                </a>
+                </li>
+                <li class="nav-item">
+                <a class="nav-link nav-icon-hover" href="javascript:void(0)">
+                    <i class="ti ti-bell-ringing"></i>
+                    <div class="notification bg-primary rounded-circle"></div>
+                </a>
+                </li>
+            </ul>
+            <div class="navbar-collapse justify-content-end px-0" id="navbarNav">
+                <ul class="navbar-nav flex-row ms-auto align-items-center justify-content-end">
+                
+                <!-- <a href="#" target="_blank"
                     class="btn btn-success"><span class="d-none d-md-block">Download Free </span> <span class="d-block d-md-none">Free</span></a> -->
-                            <li class="nav-item dropdown">
-                                <a class="nav-link nav-icon-hover" href="javascript:void(0)" id="drop2" data-bs-toggle="dropdown"
-                                    aria-expanded="false">
-                                    <img src="portofolio/src/assets/images/profile/user-1.jpg" alt="" width="35" height="35" class="rounded-circle">
-                                </a>
-                                <div class="dropdown-menu dropdown-menu-end dropdown-menu-animate-up" aria-labelledby="drop2">
-                                    <div class="message-body">
-                                        <a href="javascript:void(0)" class="d-flex align-items-center gap-2 dropdown-item">
-                                            <i class="ti ti-user fs-6"></i>
-                                            <p class="mb-0 fs-3">My Profile</p>
-                                        </a>
-                                        <a href="javascript:void(0)" class="d-flex align-items-center gap-2 dropdown-item">
-                                            <i class="ti ti-mail fs-6"></i>
-                                            <p class="mb-0 fs-3">My Account</p>
-                                        </a>
-                                        <a href="javascript:void(0)" class="d-flex align-items-center gap-2 dropdown-item">
-                                            <i class="ti ti-list-check fs-6"></i>
-                                            <p class="mb-0 fs-3">My Task</p>
-                                        </a>
-                                        <a href="./authentication-login.html" class="btn btn-outline-primary mx-3 mt-2 d-block">Logout</a>
-                                    </div>
-                                </div>
-                            </li>
-                        </ul>
+                <li class="nav-item dropdown">
+                    <a class="nav-link nav-icon-hover" href="javascript:void(0)" id="drop2" data-bs-toggle="dropdown"
+                    aria-expanded="false">
+                    <img src="portofolio/src/assets/images/profile/user-1.jpg" alt="" width="35" height="35" class="rounded-circle">
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-end dropdown-menu-animate-up" aria-labelledby="drop2">
+                    <div class="message-body">
+                        <a href="javascript:void(0)" class="d-flex align-items-center gap-2 dropdown-item">
+                        <i class="ti ti-user fs-6"></i>
+                        <p class="mb-0 fs-3">My Profile</p>
+                        </a>
+                        <a href="javascript:void(0)" class="d-flex align-items-center gap-2 dropdown-item">
+                        <i class="ti ti-mail fs-6"></i>
+                        <p class="mb-0 fs-3">My Account</p>
+                        </a>
+                        <a href="javascript:void(0)" class="d-flex align-items-center gap-2 dropdown-item">
+                        <i class="ti ti-list-check fs-6"></i>
+                        <p class="mb-0 fs-3">My Task</p>
+                        </a>
+                        <a href="./authentication-login.html" class="btn btn-outline-primary mx-3 mt-2 d-block">Logout</a>
                     </div>
-                </nav>
-            </header>
-            <!--  Header End -->
-            <div class="container-fluid">
-                <div class="row">
-                    <!-- <div class="col-lg-8">
+                    </div>
+                </li>
+                </ul>
+            </div>
+            </nav>
+        </header>
+        <!--  Header End -->
+        <div class="container-fluid">
+            <div class="row">
+                <!-- <div class="col-lg-8">
                     <div class="card">
                         <div class="card-body">
                             <h5 class="card-title d-flex align-items-center gap-2 mb-4">
@@ -120,7 +106,7 @@ if (isset($_POST['save'])) {
                         </div>
                     </div>
                 </div> -->
-                    <!-- <div class="col-lg-4">
+                <!-- <div class="col-lg-4">
                     <div class="card">
                         <div class="card-body text-center">
                         <img src="portofolio/src/assets/images/backgrounds/product-tip.png" alt="image" class="img-fluid" width="205">
@@ -131,29 +117,42 @@ if (isset($_POST['save'])) {
                         </div>
                     </div>
                 </div> -->
-                    <div class="col-lg-12">
-                        <div class="card">
-                            <div class="card-body">
-                                <h5 class="card-title">Add Your Skills</h5>
-                                <form action="" method="post">
-                                    <div class="mb-3">
-                                        <label for="exampleInputEmail1" class="form-label">Name</label>
-                                        <input type="text" name="name" class="form-control" id="name" aria-describedby="emailHelp" required value="<?php echo ($id) ? $row['name'] : ''?>">
-                                    </div>
-                                    <div class="mb-3">
-                                        <label for="exampleInputEmail1" class="form-label">Progress</label>
-                                        <input type="number" name="progress" class="form-control" id="progress" aria-describedby="emailHelp" required value="<?php echo ($id) ? $row['progress'] : ''?>">
-                                    </div>
-                                    
-                                    <button type="submit" class="btn btn-primary w-25 py-8 fs-4 mb-4" name="save">Save</button>
-                                    <button type="reset" class="btn btn-outline-primary w-25 py-8 fs-4 mb-4" name="reset">Reset</button>
-                                    
-                                </form>
+                <div class="col-lg-12">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">Contact-Form</h5>
+                            <div class="table-responsive">
+                                <table class="table text-nowrap align-middle mb-0">
+                                    <thead>
+                                        <tr class="border-2 border-bottom border-primary border-0"> 
+                                            <th scope="col" class="text-center ps-0">No</th>
+                                            <th class="col" class="text-center ps-0">Name</th>
+                                            <th scope="col" class="text-center ps-0">Email</th>
+                                            <th scope="col" class="text-center ps-0">Subject</th>
+                                            <th scope="col" class="text-center ps-0">Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="table-group-divider">
+                                        <?php foreach ($rows as $index => $row) :?>
+                                        <tr>
+                                            <td class="text-center fw-medium"><?php echo $index + 1 ?></td>
+                                            <td class="text-center fw-medium"><?php echo $row['name'];?></td>
+                                            <td class="text-center fw-medium"><?php echo $row['email'];?></td>
+                                            <td class="text-center fw-medium"><?php echo $row['subject'];?></td>
+                                            <td>
+                                                <a href="create-resume.php?edit=<?php echo $row['id']?>" class="btn btn-success btn-sm">Edit</a>
+                                                <a onclick="return confirm('Are you sure want to delete this data?')" href="resume.php?delete=<?php echo $row['id']?>" class="btn btn-danger btn-sm">Delete</a>
+                                            </td>
+                                        </tr>
+                                        <?php endforeach ?>
+                                    </tbody>
+                                </table>
                             </div>
                         </div>
                     </div>
-                    <div class="col-lg-4">
-                        <!-- <div class="card">
+                </div>
+            <div class="col-lg-4">
+                <!-- <div class="card">
                     <div class="card-body">
                     <h5 class="card-title d-flex align-items-center gap-2 mb-5 pb-3">Sessions by
                         device<span><iconify-icon icon="solar:question-circle-bold" class="fs-7 d-flex text-muted" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="tooltip-success" data-bs-title="Locations"></iconify-icon></span>
@@ -209,9 +208,9 @@ if (isset($_POST['save'])) {
                         </div>
                     </div>
                 </div> -->
-                    </div>
-                    <div class="col-lg-4">
-                        <!-- <div class="card overflow-hidden hover-img">
+            </div>
+            <div class="col-lg-4">
+                <!-- <div class="card overflow-hidden hover-img">
                     <div class="position-relative">
                     <a href="javascript:void(0)">
                         <img src="portofolio/src/assets/images/blog/blog-img1.jpg" class="card-img-top" alt="matdash-img">
@@ -303,40 +302,8 @@ if (isset($_POST['save'])) {
                     class="pe-1 text-primary text-decoration-underline">ThemeWagon</a></p>
                 </div>
             </div> -->
-                    </div>
-                </div>
         </div>
-    </div>            
-    <script>
-        document.addEventListener('DOMContentLoaded', function () {
-        const year_start = document.getElementById("year_start");
-        const year_end = document.getElementById("year_end");
-        const year_old = 1920;
-        const currentYear = new Date().getFullYear();
-
-        const yearDataStart = "<?php echo ($id) ? $row['year_start'] : '' ?>";
-        const yearDataEnd = "<?php echo ($id) ? $row['year_end'] : '' ?>";
-
-        for (let year = currentYear; year >= year_old; year--) {
-        const option = document.createElement("option");
-        option.value = year;
-        option.textContent = year;
-        if (yearDataStart && yearDataStart == year) {
-        option.selected = true;
-        }
-        year_start.appendChild(option);
-        }
-        for (let year = currentYear; year >= year_old; year--) {
-        const option = document.createElement("option");
-        option.value = year;
-        option.textContent = year;
-        if (yearDataEnd && yearDataEnd == year) {
-        option.selected = true;
-        }
-        year_end.appendChild(option);
-        }
-        });
-    </script>
+    </div>
     <script src="portofolio/src/assets/libs/jquery/dist/jquery.min.js"></script>
     <script src="portofolio/src/assets/libs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="portofolio/src/assets/libs/apexcharts/dist/apexcharts.min.js"></script>

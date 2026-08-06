@@ -1,11 +1,36 @@
 <?php
 include "../config/koneksi.php";
-session_start();
-session_regenerate_id();
-
 $q_profile = mysqli_query($conn, "SELECT * FROM home ORDER BY id DESC LIMIT 1");
 $profile = mysqli_fetch_assoc($q_profile);
+
+$q_contact = mysqli_query($conn, "SELECT * FROM contact ORDER BY id DESC LIMIT 1");
+$contact = mysqli_fetch_assoc($q_contact);
+
+$q_skills = mysqli_query($conn, "SELECT * FROM skills ORDER BY id DESC");
+$skills = mysqli_fetch_all($q_skills, MYSQLI_ASSOC);
+
+$q_resume = mysqli_query($conn, "SELECT * FROM resume ORDER BY id DESC");
+$resume = mysqli_fetch_all($q_resume, MYSQLI_ASSOC);
+
+$q_about = mysqli_query($conn, "SELECT * FROM about ORDER BY id DESC LIMIT 1");
+$about = mysqli_fetch_assoc($q_about);
+
+if (isset($_POST['submit'])) {
+	$name = $_POST['name'];
+	$email = $_POST['email'];
+	$subject = $_POST['subject'];
+	$message = $_POST['message'];
+
+	//DML / SQL
+	//Masukkan ke dalam table contact (name, email, subject, message) VALUES ('$name', '$email', '$subject',)
+	$insert = mysqli_query($conn, "INSERT INTO contact_form  (name, email, subject, message) VALUES ('$name', '$email', '$subject', '$message')");
+
+	header("location:index.php?tambah=success");
+}
+
 ?>
+
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -136,18 +161,17 @@ $profile = mysqli_fetch_assoc($q_profile);
             <div class="row">
               <div class="col-lg-6">
                 <ul>
-                  <li><i class="bi bi-chevron-right"></i> <strong>Birthday:</strong> <span>1 May 1995</span></li>
-                  <li><i class="bi bi-chevron-right"></i> <strong>Website:</strong> <span>www.example.com</span></li>
-                  <li><i class="bi bi-chevron-right"></i> <strong>Phone:</strong> <span>+123 456 7890</span></li>
-                  <li><i class="bi bi-chevron-right"></i> <strong>City:</strong> <span>New York, USA</span></li>
+                  <li><i class="bi bi-chevron-right"></i> <strong>Birthday:</strong> <span><?php echo $about['birthday']?></span></li>
+                  <li><i class="bi bi-chevron-right"></i> <strong>Website:</strong> <span><?php echo $about['website']?></span></li>
+                  <li><i class="bi bi-chevron-right"></i> <strong>Phone:</strong> <span><?php echo $about['phone']?></span></li>
+                  <li><i class="bi bi-chevron-right"></i> <strong>City:</strong> <span><?php echo $about['city']?></span></li>
                 </ul>
               </div>
               <div class="col-lg-6">
                 <ul>
-                  <li><i class="bi bi-chevron-right"></i> <strong>Age:</strong> <span>30</span></li>
-                  <li><i class="bi bi-chevron-right"></i> <strong>Degree:</strong> <span>Master</span></li>
-                  <li><i class="bi bi-chevron-right"></i> <strong>Email:</strong> <span>email@example.com</span></li>
-                  <li><i class="bi bi-chevron-right"></i> <strong>Freelance:</strong> <span>Available</span></li>
+                  <li><i class="bi bi-chevron-right"></i> <strong>Degree:</strong> <span><?php echo $about['degree']?></span></li>
+                  <li><i class="bi bi-chevron-right"></i> <strong>Email:</strong> <span><?php echo $about['email']?></span></li>
+                  <li><i class="bi bi-chevron-right"></i> <strong>Status</strong> <span><?php echo $about['status']?></span></li>
                 </ul>
               </div>
             </div>
@@ -221,52 +245,24 @@ $profile = mysqli_fetch_assoc($q_profile);
         <div class="row skills-content skills-animation">
 
           <div class="col-lg-6">
-
+            <?php foreach ($skills as $v) {
+              # code...
+            ?>
             <div class="progress">
-              <span class="skill"><span>HTML</span> <i class="val">100%</i></span>
+              <span class="skill"><span><?php echo $v['name']?></span> <i class="val"><?php echo $v['progress'] . "%"?></i></span>
               <div class="progress-bar-wrap">
-                <div class="progress-bar" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
+                <div class="progress-bar" role="progressbar" aria-valuenow="<?php echo $v['progress']?>" aria-valuemin="0" aria-valuemax="100"></div>
               </div>
             </div><!-- End Skills Item -->
 
-            <div class="progress">
-              <span class="skill"><span>CSS</span> <i class="val">90%</i></span>
-              <div class="progress-bar-wrap">
-                <div class="progress-bar" role="progressbar" aria-valuenow="90" aria-valuemin="0" aria-valuemax="100"></div>
-              </div>
-            </div><!-- End Skills Item -->
+            <?php
+            }
+            ?>
 
-            <div class="progress">
-              <span class="skill"><span>JavaScript</span> <i class="val">75%</i></span>
-              <div class="progress-bar-wrap">
-                <div class="progress-bar" role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100"></div>
-              </div>
-            </div><!-- End Skills Item -->
-
+            
           </div>
 
           <div class="col-lg-6">
-
-            <div class="progress">
-              <span class="skill"><span>PHP</span> <i class="val">80%</i></span>
-              <div class="progress-bar-wrap">
-                <div class="progress-bar" role="progressbar" aria-valuenow="80" aria-valuemin="0" aria-valuemax="100"></div>
-              </div>
-            </div><!-- End Skills Item -->
-
-            <div class="progress">
-              <span class="skill"><span>WordPress/CMS</span> <i class="val">90%</i></span>
-              <div class="progress-bar-wrap">
-                <div class="progress-bar" role="progressbar" aria-valuenow="90" aria-valuemin="0" aria-valuemax="100"></div>
-              </div>
-            </div><!-- End Skills Item -->
-
-            <div class="progress">
-              <span class="skill"><span>Photoshop</span> <i class="val">55%</i></span>
-              <div class="progress-bar-wrap">
-                <div class="progress-bar" role="progressbar" aria-valuenow="55" aria-valuemin="0" aria-valuemax="100"></div>
-              </div>
-            </div><!-- End Skills Item -->
 
           </div>
 
@@ -290,12 +286,18 @@ $profile = mysqli_fetch_assoc($q_profile);
         <div class="row">
           <div class="col-lg-12" data-aos="fade-up" data-aos-delay="100">
             <h3 class="resume-title">Education and Experience</h3>
+            <?php foreach ($resume as $v) {
+            ?>
             <div class="resume-item">
-              <h4>Master of Fine Arts &amp; Graphic Design</h4>
-              <h5>2015 - 2016</h5>
-              <p><em>Rochester Institute of Technology, Rochester, NY</em></p>
-              <p>Qui deserunt veniam. Et sed aliquam labore tempore sed quisquam iusto autem sit. Ea vero voluptatum qui ut dignissimos deleniti nerada porti sand markend</p>
-            </div><!-- Edn Resume Item -->
+              
+              <h4><?php echo $v['title']?></h4>
+              <h5><?php echo $v['year_start'] . " - " .  $v['year_end']?></h5>
+              <p><em><?php echo $v['institution']?></em></p>
+              <p><?php echo $v['desc_detail']?></p>
+            </div>
+            <?php
+            }
+            ?>
           </div>
         </div>
 
@@ -677,35 +679,35 @@ $profile = mysqli_fetch_assoc($q_profile);
 
             <div class="info-wrap">
               <div class="info-item d-flex" data-aos="fade-up" data-aos-delay="200">
-                <i class="bi bi-geo-alt flex-shrink-0"></i>
-                <div>
+                <a href="<?php echo $contact['maps']?>" class="bi bi-geo-alt flex-shrink-0 fs-3 ms-2"></a>
+                <div class="ms-4">
                   <h3>Address</h3>
-                  <p>A108 Adam Street, New York, NY 535022</p>
+                  <p><?php echo $contact['address']?></p>
                 </div>
               </div><!-- End Info Item -->
 
               <div class="info-item d-flex" data-aos="fade-up" data-aos-delay="300">
-                <i class="bi bi-telephone flex-shrink-0"></i>
-                <div>
+                <a href="<?php echo $contact['wa_link']?>" class="bi bi-telephone flex-shrink-0 fs-3 ms-2"></a>
+                <div class="ms-4">
                   <h3>Call Us</h3>
-                  <p>+1 5589 55488 55</p>
+                  <p><?php echo $contact['phone']?></p>
                 </div>
               </div><!-- End Info Item -->
 
               <div class="info-item d-flex" data-aos="fade-up" data-aos-delay="400">
-                <i class="bi bi-envelope flex-shrink-0"></i>
-                <div>
+                <a href="<?php echo $profile['email_link']?>" class="bi bi-envelope flex-shrink-0 fs-3 ms-2"></a>
+                <div class="ms-4">
                   <h3>Email Us</h3>
-                  <p>info@example.com</p>
+                  <p><?php echo $contact['email']?></p>
                 </div>
               </div><!-- End Info Item -->
 
-              <iframe src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d48389.78314118045!2d-74.006138!3d40.710059!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89c25a22a3bda30d%3A0xb89d1fe6bc499443!2sDowntown%20Conference%20Center!5e0!3m2!1sen!2sus!4v1676961268712!5m2!1sen!2sus" frameborder="0" style="border:0; width: 100%; height: 270px;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+              <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3966.1748332709817!2d106.78206377589898!3d-6.240674561111726!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e69f117be704d39%3A0xa6c4306a678251a7!2sJl.%20Baru%20II%2C%20Kby.%20Lama%20Utara%2C%20Kec.%20Kebayoran%20Lama%2C%20Kota%20Jakarta%20Selatan%2C%20Daerah%20Khusus%20Ibukota%20Jakarta%2012240!5e0!3m2!1sid!2sid!4v1785988624530!5m2!1sid!2sid" width="470" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="strict-origin-when-cross-origin"></iframe>
             </div>
           </div>
 
           <div class="col-lg-7">
-            <form action="forms/contact.php" method="post" class="php-email-form" data-aos="fade-up" data-aos-delay="200">
+            <form action="#" method="post" class="php-email-form" data-aos="fade-up" data-aos-delay="200">
               <div class="row gy-4">
 
                 <div class="col-md-6">
@@ -729,11 +731,7 @@ $profile = mysqli_fetch_assoc($q_profile);
                 </div>
 
                 <div class="col-md-12 text-center">
-                  <div class="loading">Loading</div>
-                  <div class="error-message"></div>
-                  <div class="sent-message">Your message has been sent. Thank you!</div>
-
-                  <button type="submit">Send Message</button>
+                  <button type="submit" name="submit" value="Send Message">Send Message</button>
                 </div>
 
               </div>

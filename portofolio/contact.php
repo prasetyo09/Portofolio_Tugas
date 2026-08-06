@@ -1,37 +1,40 @@
 <?php
+include "config/koneksi.php";
 session_start();
 session_regenerate_id();
-
-include "config/koneksi.php";
 
 if (!isset($_SESSION['NAME'])) {
     header("location:index.php");
     exit();
 }
 
-// Jika tombol simpan ditekan, maka data akan tersimpan
-$id = isset($_GET['edit']) ? $_GET['edit'] : '';
-$query = mysqli_query($conn, "SELECT * FROM skills WHERE id ='$id'");
-$row  = mysqli_fetch_assoc($query);
+$query = mysqli_query($conn, "SELECT * FROM contact LIMIT 1");
+$row = mysqli_fetch_assoc($query);
 
 if (isset($_POST['save'])) {
-    $name = $_POST['name'];
-    $progress = $_POST['progress'];
-  
-    if($id){
-        $update = mysqli_query($conn, "UPDATE skills SET name='$name', progress='$progress' WHERE id='$id'");
-        header("location:skills.php?update=berhasil");
+    $address = $_POST['address'];
+    $phone = $_POST['phone'];
+    $email = $_POST['email'];
+    $maps = $_POST['maps'];
+    $wa_link = $_POST['wa_link'];
 
-    } else{
-        $insert = mysqli_query($conn, "INSERT INTO skills (name, progress) VALUES ('$name', '$progress')");
-        header("location:skills.php?tambah=berhasil");
+    if ($row) {
+        $update = mysqli_query($conn, "UPDATE contact SET 
+        address = '$address', 
+        phone = '$phone', 
+        email = '$email', 
+        maps = '$maps',
+        wa_link = '$wa_link'
+        ");
+    } else {
+        $insert = mysqli_query($conn, "INSERT INTO contact 
+        (address, phone, email, maps, wa_link) VALUES 
+        ('$address', '$phone', '$email', '$maps', '$wa_link')");
     }
-    
+
+    header("location:contact.php?update=berhasil");
 }
-//tampil semua data dari user
-
 ?>
-
 <!doctype html>
 <html lang="en">
 
@@ -74,6 +77,7 @@ if (isset($_POST['save'])) {
                     </ul>
                     <div class="navbar-collapse justify-content-end px-0" id="navbarNav">
                         <ul class="navbar-nav flex-row ms-auto align-items-center justify-content-end">
+                            
                             <!-- <a href="#" target="_blank"
                     class="btn btn-success"><span class="d-none d-md-block">Download Free </span> <span class="d-block d-md-none">Free</span></a> -->
                             <li class="nav-item dropdown">
@@ -134,15 +138,27 @@ if (isset($_POST['save'])) {
                     <div class="col-lg-12">
                         <div class="card">
                             <div class="card-body">
-                                <h5 class="card-title">Add Your Skills</h5>
-                                <form action="" method="post">
+                                <h5 class="card-title">Contact</h5>
+                                <form action="" method="post" enctype="multipart/form-data">
                                     <div class="mb-3">
-                                        <label for="exampleInputEmail1" class="form-label">Name</label>
-                                        <input type="text" name="name" class="form-control" id="name" aria-describedby="emailHelp" required value="<?php echo ($id) ? $row['name'] : ''?>">
+                                        <label for="exampleInputEmail1" class="form-label">Address</label>
+                                        <textarea name="address" id="address" class="form-control"><?php echo isset($row) ? $row['address'] : '' ?></textarea>
                                     </div>
                                     <div class="mb-3">
-                                        <label for="exampleInputEmail1" class="form-label">Progress</label>
-                                        <input type="number" name="progress" class="form-control" id="progress" aria-describedby="emailHelp" required value="<?php echo ($id) ? $row['progress'] : ''?>">
+                                        <label for="exampleInputEmail1" class="form-label">Phone</label>
+                                        <input type="number" name="phone" class="form-control" id="phone" aria-describedby="emailHelp" required value="<?php echo isset($row) ? $row['phone'] : '' ?>">
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="exampleInputEmail1" class="form-label">Email</label>
+                                        <input type="email" name="email" class="form-control" id="email" aria-describedby="emailHelp" required value="<?php echo isset($row) ? $row['email'] : '' ?>">
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="exampleInputEmail1" class="form-label">Maps Link</label>
+                                        <input type="url" name="maps" class="form-control" id="maps" aria-describedby="emailHelp" value="<?php echo isset($row) ? $row['maps'] : '' ?>">
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="exampleInputEmail1" class="form-label">Whatsapp Link</label>
+                                        <input type="url" name="wa_link" class="form-control" id="wa_link" aria-describedby="emailHelp" value="<?php echo isset($row) ? $row['wa_link'] : '' ?>">
                                     </div>
                                     
                                     <button type="submit" class="btn btn-primary w-25 py-8 fs-4 mb-4" name="save">Save</button>
@@ -305,46 +321,14 @@ if (isset($_POST['save'])) {
             </div> -->
                     </div>
                 </div>
-        </div>
-    </div>            
-    <script>
-        document.addEventListener('DOMContentLoaded', function () {
-        const year_start = document.getElementById("year_start");
-        const year_end = document.getElementById("year_end");
-        const year_old = 1920;
-        const currentYear = new Date().getFullYear();
-
-        const yearDataStart = "<?php echo ($id) ? $row['year_start'] : '' ?>";
-        const yearDataEnd = "<?php echo ($id) ? $row['year_end'] : '' ?>";
-
-        for (let year = currentYear; year >= year_old; year--) {
-        const option = document.createElement("option");
-        option.value = year;
-        option.textContent = year;
-        if (yearDataStart && yearDataStart == year) {
-        option.selected = true;
-        }
-        year_start.appendChild(option);
-        }
-        for (let year = currentYear; year >= year_old; year--) {
-        const option = document.createElement("option");
-        option.value = year;
-        option.textContent = year;
-        if (yearDataEnd && yearDataEnd == year) {
-        option.selected = true;
-        }
-        year_end.appendChild(option);
-        }
-        });
-    </script>
-    <script src="portofolio/src/assets/libs/jquery/dist/jquery.min.js"></script>
-    <script src="portofolio/src/assets/libs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="portofolio/src/assets/libs/apexcharts/dist/apexcharts.min.js"></script>
-    <script src="portofolio/src/assets/libs/simplebar/dist/simplebar.js"></script>
-    <script src="portofolio/src/assets/js/sidebarmenu.js"></script>
-    <script src="portofolio/src/assets/js/app.min.js"></script>
-    <script src="portofolio/src/assets/js/dashboard.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/iconify-icon@1.0.8/dist/iconify-icon.min.js"></script>
+                <script src="portofolio/src/assets/libs/jquery/dist/jquery.min.js"></script>
+                <script src="portofolio/src/assets/libs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+                <script src="portofolio/src/assets/libs/apexcharts/dist/apexcharts.min.js"></script>
+                <script src="portofolio/src/assets/libs/simplebar/dist/simplebar.js"></script>
+                <script src="portofolio/src/assets/js/sidebarmenu.js"></script>
+                <script src="portofolio/src/assets/js/app.min.js"></script>
+                <script src="portofolio/src/assets/js/dashboard.js"></script>
+                <script src="https://cdn.jsdelivr.net/npm/iconify-icon@1.0.8/dist/iconify-icon.min.js"></script>
 </body>
 
 </html>

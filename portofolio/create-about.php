@@ -353,7 +353,7 @@ if (isset($_GET['delete'])) {
                                     </div>
                                     <div class="mb-4">
                                         <label for="exampleInputPassword1" class="form-label">Phone</label>
-                                        <input type="text" name="phone" class="form-control" id="phone" required value="<?php echo ($id) ? $row['phone'] : ''?>">
+                                        <input type="number" name="phone" class="form-control" id="phone" required value="<?php echo ($id) ? $row['phone'] : ''?>">
                                     </div>
                                     <div class="mb-4">
                                         <label for="exampleInputPassword1" class="form-label">Email</label>
