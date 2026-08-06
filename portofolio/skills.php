@@ -145,7 +145,7 @@ if (isset($_GET['delete'])){
                                             <td class="text-center fw-medium"><?php echo $row['name'];?></td>
                                             <td class="text-center fw-medium"><?php echo $row['progress'] . "%";?></td>
                                             
-                                            <td>
+                                            <td class="text-center fw-medium">
                                                 <a href="create-skills.php?edit=<?php echo $row['id']?>" class="btn btn-success btn-sm">Edit</a>
                                                 <a onclick="return confirm('Are you sure want to delete this data?')" href="skills.php?delete=<?php echo $row['id']?>" class="btn btn-danger btn-sm">Delete</a>
                                             </td>

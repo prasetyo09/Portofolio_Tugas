@@ -139,7 +139,7 @@ if (isset($_GET['delete'])){
                                             <td class="text-center fw-medium"><?php echo $row['name'];?></td>
                                             <td class="text-center fw-medium"><?php echo $row['email'];?></td>
                                             <td class="text-center fw-medium"><?php echo $row['subject'];?></td>
-                                            <td>
+                                            <td class="text-center fw-medium">
                                                 <a href="contact-detail.php?id=<?php echo $row['id']?>" class="btn btn-success btn-sm">Detail</a>
                                                 <a onclick="return confirm('Are you sure want to delete this data?')" href="contact-form.php?delete=<?php echo $row['id']?>" class="btn btn-danger btn-sm">Delete</a>
                                             </td>
