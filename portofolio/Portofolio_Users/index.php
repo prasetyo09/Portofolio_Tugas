@@ -15,6 +15,9 @@ $resume = mysqli_fetch_all($q_resume, MYSQLI_ASSOC);
 $q_about = mysqli_query($conn, "SELECT * FROM about ORDER BY id DESC LIMIT 1");
 $about = mysqli_fetch_assoc($q_about);
 
+$q_image = mysqli_query($conn, "SELECT * FROM image_control ORDER BY id DESC LIMIT 1");
+$image = mysqli_fetch_assoc($q_image);
+
 if (isset($_POST['submit'])) {
 	$name = $_POST['name'];
 	$email = $_POST['email'];
@@ -23,7 +26,7 @@ if (isset($_POST['submit'])) {
 
 	//DML / SQL
 	//Masukkan ke dalam table contact (name, email, subject, message) VALUES ('$name', '$email', '$subject',)
-	$insert = mysqli_query($conn, "INSERT INTO contact_form  (name, email, subject, message) VALUES ('$name', '$email', '$subject', '$message')");
+	$insert = mysqli_query($conn, "INSERT INTO contact_form (name, email, subject, message) VALUES ('$name', '$email', '$subject', '$message')");
 
 	header("location:index.php?tambah=success");
 }
@@ -75,10 +78,10 @@ if (isset($_POST['submit'])) {
     <i class="header-toggle d-xl-none bi bi-list"></i>
 
     <div class="profile-img">
-      <img src="assets/img/my-profile-img.jpg" alt="" class="img-fluid rounded-circle">
+      <img src="../assets/img/<?php echo $image['image1']?>" alt="" class="img-fluid rounded-circle">
     </div>
 
-    <a href="index.html" class="logo d-flex align-items-center justify-content-center">
+    <a href="index.php" class="logo d-flex align-items-center justify-content-center">
       <!-- Uncomment the line below if you also wish to use an image logo -->
       <!-- <img src="assets/img/logo.png" alt=""> -->
       <h1 class="sitename"><?php echo $profile['name']?></h1>
@@ -98,7 +101,7 @@ if (isset($_POST['submit'])) {
         <li><a href="#hero" class="active"><i class="bi bi-house navicon"></i>Home</a></li>
         <li><a href="#about"><i class="bi bi-person navicon"></i> About</a></li>
         <li><a href="#resume"><i class="bi bi-file-earmark-text navicon"></i> Resume</a></li>
-        <li><a href="#portfolio"><i class="bi bi-images navicon"></i> Portfolio</a></li>
+        <!-- <li><a href="#portfolio"><i class="bi bi-images navicon"></i> Portfolio</a></li>
         <li><a href="#services"><i class="bi bi-hdd-stack navicon"></i> Services</a></li>
         <li class="dropdown"><a href="#"><i class="bi bi-menu-button navicon"></i> <span>Dropdown</span> <i class="bi bi-chevron-down toggle-dropdown"></i></a>
           <ul>
@@ -116,7 +119,7 @@ if (isset($_POST['submit'])) {
             <li><a href="#">Dropdown 3</a></li>
             <li><a href="#">Dropdown 4</a></li>
           </ul>
-        </li>
+        </li> -->
         <li><a href="#contact"><i class="bi bi-envelope navicon"></i> Contact</a></li>
       </ul>
     </nav>
@@ -128,10 +131,10 @@ if (isset($_POST['submit'])) {
     <!-- Hero Section -->
     <section id="hero" class="hero section dark-background">
 
-      <img src="assets/img/hero-bg.jpg" alt="" data-aos="fade-in" class="">
+      <img src="../assets/img/<?php echo $image['image2']?>" alt="" data-aos="fade-in" class="opacity-75">
 
       <div class="container" data-aos="fade-up" data-aos-delay="100">
-        <h2><?php echo $profile['name']?></h2>
+        <h2><?php echo $image['name']?></h2>
         <p>I'm <span class="typed" data-typed-items="Designer, Web Developer, Freelancer, Photographer">Designer</span><span class="typed-cursor typed-cursor--blink" aria-hidden="true"></span><span class="typed-cursor typed-cursor--blink" aria-hidden="true"></span></p>
       </div>
 
@@ -150,10 +153,10 @@ if (isset($_POST['submit'])) {
 
         <div class="row gy-4 justify-content-center">
           <div class="col-lg-4">
-            <img src="assets/img/my-profile-img.jpg" class="img-fluid" alt="">
+            <img src="../assets/img/gambar-1.jpg" class="img-fluid" alt="">
           </div>
           <div class="col-lg-8 content">
-            <h2>UI/UX Designer &amp; Web Developer.</h2>
+            <h2><?php echo $about['role']?></h2>
             <p class="fst-italic py-3">
               Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore
               magna aliqua.
@@ -171,7 +174,7 @@ if (isset($_POST['submit'])) {
                 <ul>
                   <li><i class="bi bi-chevron-right"></i> <strong>Degree:</strong> <span><?php echo $about['degree']?></span></li>
                   <li><i class="bi bi-chevron-right"></i> <strong>Email:</strong> <span><?php echo $about['email']?></span></li>
-                  <li><i class="bi bi-chevron-right"></i> <strong>Status</strong> <span><?php echo $about['status']?></span></li>
+                  <li><i class="bi bi-chevron-right"></i> <strong>Status</strong> <span><?php echo $about['status'] == 1 ? "Active" : "Non-Active" ?></span></li>
                 </ul>
               </div>
             </div>
@@ -278,7 +281,7 @@ if (isset($_POST['submit'])) {
       <!-- Section Title -->
       <div class="container section-title" data-aos="fade-up">
         <h2>Resume</h2>
-        <p>Magnam dolores commodi suscipit. Necessitatibus eius consequatur ex aliquid fuga eum quidem. Sit sint consectetur velit. Quisquam quos quisquam cupiditate. Et nemo qui impedit suscipit alias ea. Quia fugiat sit in iste officiis commodi quidem hic quas.</p>
+        <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. In soluta ullam rem iste debitis minima laborum, voluptatem iusto amet similique, explicabo nulla ut delectus quia? In, deleniti? Non, consequatur eveniet.</p>
       </div><!-- End Section Title -->
 
       <div class="container">
@@ -308,13 +311,11 @@ if (isset($_POST['submit'])) {
     </section><!-- /Resume Section -->
 
     <!-- Portfolio Section -->
-    <section id="portfolio" class="portfolio section light-background">
-
-      <!-- Section Title -->
+    <!-- <section id="portfolio" class="portfolio section light-background">
       <div class="container section-title" data-aos="fade-up">
         <h2>Portfolio</h2>
         <p>Magnam dolores commodi suscipit. Necessitatibus eius consequatur ex aliquid fuga eum quidem. Sit sint consectetur velit. Quisquam quos quisquam cupiditate. Et nemo qui impedit suscipit alias ea. Quia fugiat sit in iste officiis commodi quidem hic quas.</p>
-      </div><!-- End Section Title -->
+      </div>
 
       <div class="container">
 
@@ -326,7 +327,7 @@ if (isset($_POST['submit'])) {
             <li data-filter=".filter-product">Product</li>
             <li data-filter=".filter-branding">Branding</li>
             <li data-filter=".filter-books">Books</li>
-          </ul><!-- End Portfolio Filters -->
+          </ul>
 
           <div class="row gy-4 isotope-container" data-aos="fade-up" data-aos-delay="200">
 
@@ -340,7 +341,7 @@ if (isset($_POST['submit'])) {
                   <a href="portfolio-details.html" title="More Details" class="details-link"><i class="bi bi-link-45deg"></i></a>
                 </div>
               </div>
-            </div><!-- End Portfolio Item -->
+            </div>
 
             <div class="col-lg-4 col-md-6 portfolio-item isotope-item filter-product">
               <div class="portfolio-content h-100">
@@ -352,7 +353,7 @@ if (isset($_POST['submit'])) {
                   <a href="portfolio-details.html" title="More Details" class="details-link"><i class="bi bi-link-45deg"></i></a>
                 </div>
               </div>
-            </div><!-- End Portfolio Item -->
+            </div>
 
             <div class="col-lg-4 col-md-6 portfolio-item isotope-item filter-branding">
               <div class="portfolio-content h-100">
@@ -364,7 +365,7 @@ if (isset($_POST['submit'])) {
                   <a href="portfolio-details.html" title="More Details" class="details-link"><i class="bi bi-link-45deg"></i></a>
                 </div>
               </div>
-            </div><!-- End Portfolio Item -->
+            </div>
 
             <div class="col-lg-4 col-md-6 portfolio-item isotope-item filter-books">
               <div class="portfolio-content h-100">
@@ -376,7 +377,7 @@ if (isset($_POST['submit'])) {
                   <a href="portfolio-details.html" title="More Details" class="details-link"><i class="bi bi-link-45deg"></i></a>
                 </div>
               </div>
-            </div><!-- End Portfolio Item -->
+            </div>
 
             <div class="col-lg-4 col-md-6 portfolio-item isotope-item filter-app">
               <div class="portfolio-content h-100">
@@ -388,7 +389,7 @@ if (isset($_POST['submit'])) {
                   <a href="portfolio-details.html" title="More Details" class="details-link"><i class="bi bi-link-45deg"></i></a>
                 </div>
               </div>
-            </div><!-- End Portfolio Item -->
+            </div>
 
             <div class="col-lg-4 col-md-6 portfolio-item isotope-item filter-product">
               <div class="portfolio-content h-100">
@@ -400,7 +401,7 @@ if (isset($_POST['submit'])) {
                   <a href="portfolio-details.html" title="More Details" class="details-link"><i class="bi bi-link-45deg"></i></a>
                 </div>
               </div>
-            </div><!-- End Portfolio Item -->
+            </div>
 
             <div class="col-lg-4 col-md-6 portfolio-item isotope-item filter-branding">
               <div class="portfolio-content h-100">
@@ -412,7 +413,7 @@ if (isset($_POST['submit'])) {
                   <a href="portfolio-details.html" title="More Details" class="details-link"><i class="bi bi-link-45deg"></i></a>
                 </div>
               </div>
-            </div><!-- End Portfolio Item -->
+            </div>
 
             <div class="col-lg-4 col-md-6 portfolio-item isotope-item filter-books">
               <div class="portfolio-content h-100">
@@ -424,7 +425,7 @@ if (isset($_POST['submit'])) {
                   <a href="portfolio-details.html" title="More Details" class="details-link"><i class="bi bi-link-45deg"></i></a>
                 </div>
               </div>
-            </div><!-- End Portfolio Item -->
+            </div>
 
             <div class="col-lg-4 col-md-6 portfolio-item isotope-item filter-app">
               <div class="portfolio-content h-100">
@@ -436,7 +437,7 @@ if (isset($_POST['submit'])) {
                   <a href="portfolio-details.html" title="More Details" class="details-link"><i class="bi bi-link-45deg"></i></a>
                 </div>
               </div>
-            </div><!-- End Portfolio Item -->
+            </div>
 
             <div class="col-lg-4 col-md-6 portfolio-item isotope-item filter-product">
               <div class="portfolio-content h-100">
@@ -448,7 +449,7 @@ if (isset($_POST['submit'])) {
                   <a href="portfolio-details.html" title="More Details" class="details-link"><i class="bi bi-link-45deg"></i></a>
                 </div>
               </div>
-            </div><!-- End Portfolio Item -->
+            </div>
 
             <div class="col-lg-4 col-md-6 portfolio-item isotope-item filter-branding">
               <div class="portfolio-content h-100">
@@ -460,7 +461,7 @@ if (isset($_POST['submit'])) {
                   <a href="portfolio-details.html" title="More Details" class="details-link"><i class="bi bi-link-45deg"></i></a>
                 </div>
               </div>
-            </div><!-- End Portfolio Item -->
+            </div>
 
             <div class="col-lg-4 col-md-6 portfolio-item isotope-item filter-books">
               <div class="portfolio-content h-100">
@@ -472,24 +473,22 @@ if (isset($_POST['submit'])) {
                   <a href="portfolio-details.html" title="More Details" class="details-link"><i class="bi bi-link-45deg"></i></a>
                 </div>
               </div>
-            </div><!-- End Portfolio Item -->
+            </div>
 
-          </div><!-- End Portfolio Container -->
+          </div>
 
         </div>
 
       </div>
 
-    </section><!-- /Portfolio Section -->
+    </section> -->
 
     <!-- Services Section -->
-    <section id="services" class="services section">
-
-      <!-- Section Title -->
+    <!-- <section id="services" class="services section">
       <div class="container section-title" data-aos="fade-up">
         <h2>Services</h2>
         <p>Magnam dolores commodi suscipit. Necessitatibus eius consequatur ex aliquid fuga eum quidem. Sit sint consectetur velit. Quisquam quos quisquam cupiditate. Et nemo qui impedit suscipit alias ea. Quia fugiat sit in iste officiis commodi quidem hic quas.</p>
-      </div><!-- End Section Title -->
+      </div>
 
       <div class="container">
 
@@ -502,7 +501,7 @@ if (isset($_POST['submit'])) {
               <p class="description">Voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident</p>
             </div>
           </div>
-          <!-- End Service Item -->
+          
 
           <div class="col-lg-4 col-md-6 service-item d-flex" data-aos="fade-up" data-aos-delay="200">
             <div class="icon flex-shrink-0"><i class="bi bi-card-checklist"></i></div>
@@ -510,7 +509,7 @@ if (isset($_POST['submit'])) {
               <h4 class="title"><a href="service-details.html" class="stretched-link">Dolor Sitema</a></h4>
               <p class="description">Minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat tarad limino ata</p>
             </div>
-          </div><!-- End Service Item -->
+          </div>
 
           <div class="col-lg-4 col-md-6 service-item d-flex" data-aos="fade-up" data-aos-delay="300">
             <div class="icon flex-shrink-0"><i class="bi bi-bar-chart"></i></div>
@@ -518,7 +517,7 @@ if (isset($_POST['submit'])) {
               <h4 class="title"><a href="service-details.html" class="stretched-link">Sed ut perspiciatis</a></h4>
               <p class="description">Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur</p>
             </div>
-          </div><!-- End Service Item -->
+          </div>
 
           <div class="col-lg-4 col-md-6 service-item d-flex" data-aos="fade-up" data-aos-delay="400">
             <div class="icon flex-shrink-0"><i class="bi bi-binoculars"></i></div>
@@ -526,7 +525,7 @@ if (isset($_POST['submit'])) {
               <h4 class="title"><a href="service-details.html" class="stretched-link">Magni Dolores</a></h4>
               <p class="description">Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum</p>
             </div>
-          </div><!-- End Service Item -->
+          </div>
 
           <div class="col-lg-4 col-md-6 service-item d-flex" data-aos="fade-up" data-aos-delay="500">
             <div class="icon flex-shrink-0"><i class="bi bi-brightness-high"></i></div>
@@ -534,7 +533,7 @@ if (isset($_POST['submit'])) {
               <h4 class="title"><a href="service-details.html" class="stretched-link">Nemo Enim</a></h4>
               <p class="description">At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque</p>
             </div>
-          </div><!-- End Service Item -->
+          </div>
 
           <div class="col-lg-4 col-md-6 service-item d-flex" data-aos="fade-up" data-aos-delay="600">
             <div class="icon flex-shrink-0"><i class="bi bi-calendar4-week"></i></div>
@@ -542,22 +541,22 @@ if (isset($_POST['submit'])) {
               <h4 class="title"><a href="service-details.html" class="stretched-link">Eiusmod Tempor</a></h4>
               <p class="description">Et harum quidem rerum facilis est et expedita distinctio. Nam libero tempore, cum soluta nobis est eligendi</p>
             </div>
-          </div><!-- End Service Item -->
+          </div>
 
         </div>
 
       </div>
 
-    </section><!-- /Services Section -->
+    </section> -->
 
     <!-- Testimonials Section -->
-    <section id="testimonials" class="testimonials section light-background">
+    <!-- <section id="testimonials" class="testimonials section light-background">
 
-      <!-- Section Title -->
+      
       <div class="container section-title" data-aos="fade-up">
         <h2>Testimonials</h2>
         <p>Necessitatibus eius consequatur ex aliquid fuga eum quidem sint consectetur velit</p>
-      </div><!-- End Section Title -->
+      </div>
 
       <div class="container" data-aos="fade-up" data-aos-delay="100">
 
@@ -600,7 +599,7 @@ if (isset($_POST['submit'])) {
                 <h3>Saul Goodman</h3>
                 <h4>Ceo &amp; Founder</h4>
               </div>
-            </div><!-- End testimonial item -->
+            </div>
 
             <div class="swiper-slide">
               <div class="testimonial-item">
@@ -613,7 +612,7 @@ if (isset($_POST['submit'])) {
                 <h3>Sara Wilsson</h3>
                 <h4>Designer</h4>
               </div>
-            </div><!-- End testimonial item -->
+            </div>
 
             <div class="swiper-slide">
               <div class="testimonial-item">
@@ -626,7 +625,7 @@ if (isset($_POST['submit'])) {
                 <h3>Jena Karlis</h3>
                 <h4>Store Owner</h4>
               </div>
-            </div><!-- End testimonial item -->
+            </div>
 
             <div class="swiper-slide">
               <div class="testimonial-item">
@@ -639,7 +638,7 @@ if (isset($_POST['submit'])) {
                 <h3>Matt Brandon</h3>
                 <h4>Freelancer</h4>
               </div>
-            </div><!-- End testimonial item -->
+            </div>
 
             <div class="swiper-slide">
               <div class="testimonial-item">
@@ -652,7 +651,7 @@ if (isset($_POST['submit'])) {
                 <h3>John Larson</h3>
                 <h4>Entrepreneur</h4>
               </div>
-            </div><!-- End testimonial item -->
+            </div>
 
           </div>
           <div class="swiper-pagination"></div>
@@ -660,7 +659,7 @@ if (isset($_POST['submit'])) {
 
       </div>
 
-    </section><!-- /Testimonials Section -->
+    </section> -->
 
     <!-- Contact Section -->
     <section id="contact" class="contact section">
@@ -702,12 +701,12 @@ if (isset($_POST['submit'])) {
                 </div>
               </div><!-- End Info Item -->
 
-              <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3966.1748332709817!2d106.78206377589898!3d-6.240674561111726!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e69f117be704d39%3A0xa6c4306a678251a7!2sJl.%20Baru%20II%2C%20Kby.%20Lama%20Utara%2C%20Kec.%20Kebayoran%20Lama%2C%20Kota%20Jakarta%20Selatan%2C%20Daerah%20Khusus%20Ibukota%20Jakarta%2012240!5e0!3m2!1sid!2sid!4v1785988624530!5m2!1sid!2sid" width="470" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="strict-origin-when-cross-origin"></iframe>
+              <iframe src=  "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3966.1748332709817!2d106.78206377589898!3d-6.240674561111726!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e69f117be704d39%3A0xa6c4306a678251a7!2sJl.%20Baru%20II%2C%20Kby.%20Lama%20Utara%2C%20Kec.%20Kebayoran%20Lama%2C%20Kota%20Jakarta%20Selatan%2C%20Daerah%20Khusus%20Ibukota%20Jakarta%2012240!5e0!3m2!1sid!2sid!4v1785988624530!5m2!1sid!2sid" width="470" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="strict-origin-when-cross-origin"></iframe>
             </div>
           </div>
 
           <div class="col-lg-7">
-            <form action="#" method="post" class="php-email-form" data-aos="fade-up" data-aos-delay="200">
+            <form action="#" method="post"  data-aos="fade-up" data-aos-delay="200">
               <div class="row gy-4">
 
                 <div class="col-md-6">
@@ -731,7 +730,7 @@ if (isset($_POST['submit'])) {
                 </div>
 
                 <div class="col-md-12 text-center">
-                  <button type="submit" name="submit" value="Send Message">Send Message</button>
+                  <button type="submit" name="submit" value="Send Message" class="btn btn-primary">Send Message</button>
                 </div>
 
               </div>
@@ -750,7 +749,7 @@ if (isset($_POST['submit'])) {
 
     <div class="container">
       <div class="copyright text-center ">
-        <p>© <span>Copyright</span> <strong class="px-1 sitename">iPortfolio</strong> <span>All Rights Reserved</span></p>
+        <p>© <span>Copyright</span> <strong class="px-1 sitename"><?php echo $image['name']?></strong> <span>All Rights Reserved</span></p>
       </div>
       <div class="credits">
         <!-- All the links in the footer should remain intact. -->

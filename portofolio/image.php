@@ -8,13 +8,21 @@ if (!isset($_SESSION['NAME'])) {
     exit();
 }
 
-$query = mysqli_query($conn, "SELECT * FROM contact_form ORDER BY id DESC");
+$query = mysqli_query($conn, "SELECT * FROM image_control ORDER BY id DESC");
 $rows = mysqli_fetch_all($query, MYSQLI_ASSOC);
 
 if (isset($_GET['delete'])){
     $delete = $_GET ['delete'];
-    $delete = mysqli_query ($conn, "DELETE FROM contact_form WHERE id='$delete'");
-    header("location:contact-form.php?hapus=berhasil");
+    $img = mysqli_query($conn, "SELECT image FROM image_control WHERE id = '$delete'");
+    $rowimg = mysqli_fetch_assoc($img);
+    if ($delete && !empty($rowimg['image'])){
+        $old_picture_path = "assets/img/" . $rowimg['image'];
+        if(file_exists($old_picture_path)){
+            unlink($old_picture_path);
+        }
+    }
+    $delete = mysqli_query ($conn, "DELETE FROM image WHERE id='$delete'");
+    header("location:image.php?hapus=berhasil");
 }
 ?>
 <!doctype html>
@@ -34,9 +42,10 @@ if (isset($_GET['delete'])){
         data-sidebar-position="fixed" data-header-position="fixed">
         <!-- Sidebar Start -->
         <aside class="left-sidebar">
-            <?php
-            include "inc/sidebar.php";
-            ?>
+        <!-- Sidebar scroll-->
+        <?php
+        include "inc/sidebar.php";
+        ?>
         </aside>
         <!--  Sidebar End -->
         <!--  Main wrapper -->
@@ -59,7 +68,6 @@ if (isset($_GET['delete'])){
             </ul>
             <div class="navbar-collapse justify-content-end px-0" id="navbarNav">
                 <ul class="navbar-nav flex-row ms-auto align-items-center justify-content-end">
-                
                 <!-- <a href="#" target="_blank"
                     class="btn btn-success"><span class="d-none d-md-block">Download Free </span> <span class="d-block d-md-none">Free</span></a> -->
                 <li class="nav-item dropdown">
@@ -120,31 +128,37 @@ if (isset($_GET['delete'])){
                 <div class="col-lg-12">
                     <div class="card">
                         <div class="card-body">
-                            <h5 class="card-title">Contact-Form</h5>
+                            <h5 class="card-title">Image Control</h5>
                             <div class="table-responsive">
                                 <table class="table text-nowrap align-middle mb-0">
                                     <thead>
                                         <tr class="border-2 border-bottom border-primary border-0"> 
                                             <th scope="col" class="text-center ps-0">No</th>
-                                            <th class="col" class="text-center ps-0">Name</th>
-                                            <th scope="col" class="text-center ps-0">Email</th>
-                                            <th scope="col" class="text-center ps-0">Subject</th>
+                                            <th scope="col" class="text-center ps-0">Name</th>
+                                            <th scope="col" class="text-center ps-0">Profile Picture</th>
+                                            <th scope="col" class="text-center ps-0">Home Background</th>
                                             <th scope="col" class="text-center ps-0">Action</th>
                                         </tr>
                                     </thead>
                                     <tbody class="table-group-divider">
-                                        <?php foreach ($rows as $index => $row) :?>
+                                        <?php foreach ($rows as $index => $row) {
+                                        ?>
                                         <tr>
-                                            <td class="text-center fw-medium"><?php echo $index + 1 ?></td>
-                                            <td class="text-center fw-medium"><?php echo $row['name'];?></td>
-                                            <td class="text-center fw-medium"><?php echo $row['email'];?></td>
-                                            <td class="text-center fw-medium"><?php echo $row['subject'];?></td>
-                                            <td>
-                                                <a href="contact-detail.php?id=<?php echo $row['id']?>" class="btn btn-success btn-sm">Detail</a>
-                                                <a onclick="return confirm('Are you sure want to delete this data?')" href="contact-form.php?delete=<?php echo $row['id']?>" class="btn btn-danger btn-sm">Delete</a>
+                                            <td class="text-center fw-medium">1</td>
+                                            <td class="text-center fw-medium"><?php echo $row['name']?></td>
+                                            <td class="text-center fw-medium">
+                                                <img src="assets/img/<?php echo $row['image1'];?>" alt="" width="176">
+                                            </td>
+                                            <td class="text-center fw-medium">
+                                                <img src="assets/img/<?php echo $row['image2'];?>" alt="" width="176">
+                                            </td>
+                                            <td class="text-center fw-medium">
+                                                <a href="edit-image.php?edit=<?php echo $row['id']?>" class="btn btn-success btn-lg">Edit</a>
                                             </td>
                                         </tr>
-                                        <?php endforeach ?>
+                                        <?php
+                                        }
+                                        ?>
                                     </tbody>
                                 </table>
                             </div>

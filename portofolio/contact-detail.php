@@ -8,24 +8,20 @@ if (!isset($_SESSION['NAME'])) {
     exit();
 }
 
-$query = mysqli_query($conn, "SELECT * FROM contact_form ORDER BY id DESC");
-$rows = mysqli_fetch_all($query, MYSQLI_ASSOC);
-
-if (isset($_GET['delete'])){
-    $delete = $_GET ['delete'];
-    $delete = mysqli_query ($conn, "DELETE FROM contact_form WHERE id='$delete'");
-    header("location:contact-form.php?hapus=berhasil");
-}
-?>
+$id = isset($_GET['id']) ? $_GET['id'] : '';
+$query = mysqli_query($conn, "SELECT * FROM contact_form WHERE id = '$id' ");
+$row  = mysqli_fetch_assoc($query);
+//jika params delete ada
+?>  
 <!doctype html>
 <html lang="en">
 
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>SeoDash Free Bootstrap Admin Template by Adminmart</title>
-  <link rel="shortcut icon" type="image/png" href="portofolio/src/assets/images/logos/seodashlogo.png" />
-  <link rel="stylesheet" href="portofolio/src/assets/css/styles.min.css" />
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>SeoDash Free Bootstrap Admin Template by Adminmart</title>
+    <link rel="shortcut icon" type="image/png" href="portofolio/src/assets/images/logos/seodashlogo.png" />
+    <link rel="stylesheet" href="portofolio/src/assets/css/styles.min.css" />
 </head>
 
 <body>
@@ -41,58 +37,58 @@ if (isset($_GET['delete'])){
         <!--  Sidebar End -->
         <!--  Main wrapper -->
         <div class="body-wrapper">
-        <!--  Header Start -->
-        <header class="app-header">
-            <nav class="navbar navbar-expand-lg navbar-light">
-            <ul class="navbar-nav">
-                <li class="nav-item d-block d-xl-none">
-                <a class="nav-link sidebartoggler nav-icon-hover" id="headerCollapse" href="javascript:void(0)">
-                    <i class="ti ti-menu-2"></i>
-                </a>
-                </li>
-                <li class="nav-item">
-                <a class="nav-link nav-icon-hover" href="javascript:void(0)">
-                    <i class="ti ti-bell-ringing"></i>
-                    <div class="notification bg-primary rounded-circle"></div>
-                </a>
-                </li>
-            </ul>
-            <div class="navbar-collapse justify-content-end px-0" id="navbarNav">
-                <ul class="navbar-nav flex-row ms-auto align-items-center justify-content-end">
-                
-                <!-- <a href="#" target="_blank"
+            <!--  Header Start -->
+            <header class="app-header">
+                <nav class="navbar navbar-expand-lg navbar-light">
+                    <ul class="navbar-nav">
+                        <li class="nav-item d-block d-xl-none">
+                            <a class="nav-link sidebartoggler nav-icon-hover" id="headerCollapse" href="javascript:void(0)">
+                                <i class="ti ti-menu-2"></i>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link nav-icon-hover" href="javascript:void(0)">
+                                <i class="ti ti-bell-ringing"></i>
+                                <div class="notification bg-primary rounded-circle"></div>
+                            </a>
+                        </li>
+                    </ul>
+                    <div class="navbar-collapse justify-content-end px-0" id="navbarNav">
+                        <ul class="navbar-nav flex-row ms-auto align-items-center justify-content-end">
+                            
+                            <!-- <a href="#" target="_blank"
                     class="btn btn-success"><span class="d-none d-md-block">Download Free </span> <span class="d-block d-md-none">Free</span></a> -->
-                <li class="nav-item dropdown">
-                    <a class="nav-link nav-icon-hover" href="javascript:void(0)" id="drop2" data-bs-toggle="dropdown"
-                    aria-expanded="false">
-                    <img src="portofolio/src/assets/images/profile/user-1.jpg" alt="" width="35" height="35" class="rounded-circle">
-                    </a>
-                    <div class="dropdown-menu dropdown-menu-end dropdown-menu-animate-up" aria-labelledby="drop2">
-                    <div class="message-body">
-                        <a href="javascript:void(0)" class="d-flex align-items-center gap-2 dropdown-item">
-                        <i class="ti ti-user fs-6"></i>
-                        <p class="mb-0 fs-3">My Profile</p>
-                        </a>
-                        <a href="javascript:void(0)" class="d-flex align-items-center gap-2 dropdown-item">
-                        <i class="ti ti-mail fs-6"></i>
-                        <p class="mb-0 fs-3">My Account</p>
-                        </a>
-                        <a href="javascript:void(0)" class="d-flex align-items-center gap-2 dropdown-item">
-                        <i class="ti ti-list-check fs-6"></i>
-                        <p class="mb-0 fs-3">My Task</p>
-                        </a>
-                        <a href="./authentication-login.html" class="btn btn-outline-primary mx-3 mt-2 d-block">Logout</a>
+                            <li class="nav-item dropdown">
+                                <a class="nav-link nav-icon-hover" href="javascript:void(0)" id="drop2" data-bs-toggle="dropdown"
+                                    aria-expanded="false">
+                                    <img src="portofolio/src/assets/images/profile/user-1.jpg" alt="" width="35" height="35" class="rounded-circle">
+                                </a>
+                                <div class="dropdown-menu dropdown-menu-end dropdown-menu-animate-up" aria-labelledby="drop2">
+                                    <div class="message-body">
+                                        <a href="javascript:void(0)" class="d-flex align-items-center gap-2 dropdown-item">
+                                            <i class="ti ti-user fs-6"></i>
+                                            <p class="mb-0 fs-3">My Profile</p>
+                                        </a>
+                                        <a href="javascript:void(0)" class="d-flex align-items-center gap-2 dropdown-item">
+                                            <i class="ti ti-mail fs-6"></i>
+                                            <p class="mb-0 fs-3">My Account</p>
+                                        </a>
+                                        <a href="javascript:void(0)" class="d-flex align-items-center gap-2 dropdown-item">
+                                            <i class="ti ti-list-check fs-6"></i>
+                                            <p class="mb-0 fs-3">My Task</p>
+                                        </a>
+                                        <a href="./authentication-login.html" class="btn btn-outline-primary mx-3 mt-2 d-block">Logout</a>
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
                     </div>
-                    </div>
-                </li>
-                </ul>
-            </div>
-            </nav>
-        </header>
-        <!--  Header End -->
-        <div class="container-fluid">
-            <div class="row">
-                <!-- <div class="col-lg-8">
+                </nav>
+            </header>
+            <!--  Header End -->
+            <div class="container-fluid">
+                <div class="row">
+                    <!-- <div class="col-lg-8">
                     <div class="card">
                         <div class="card-body">
                             <h5 class="card-title d-flex align-items-center gap-2 mb-4">
@@ -106,7 +102,7 @@ if (isset($_GET['delete'])){
                         </div>
                     </div>
                 </div> -->
-                <!-- <div class="col-lg-4">
+                    <!-- <div class="col-lg-4">
                     <div class="card">
                         <div class="card-body text-center">
                         <img src="portofolio/src/assets/images/backgrounds/product-tip.png" alt="image" class="img-fluid" width="205">
@@ -117,42 +113,37 @@ if (isset($_GET['delete'])){
                         </div>
                     </div>
                 </div> -->
-                <div class="col-lg-12">
-                    <div class="card">
-                        <div class="card-body">
-                            <h5 class="card-title">Contact-Form</h5>
-                            <div class="table-responsive">
-                                <table class="table text-nowrap align-middle mb-0">
-                                    <thead>
-                                        <tr class="border-2 border-bottom border-primary border-0"> 
-                                            <th scope="col" class="text-center ps-0">No</th>
-                                            <th class="col" class="text-center ps-0">Name</th>
-                                            <th scope="col" class="text-center ps-0">Email</th>
-                                            <th scope="col" class="text-center ps-0">Subject</th>
-                                            <th scope="col" class="text-center ps-0">Action</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody class="table-group-divider">
-                                        <?php foreach ($rows as $index => $row) :?>
-                                        <tr>
-                                            <td class="text-center fw-medium"><?php echo $index + 1 ?></td>
-                                            <td class="text-center fw-medium"><?php echo $row['name'];?></td>
-                                            <td class="text-center fw-medium"><?php echo $row['email'];?></td>
-                                            <td class="text-center fw-medium"><?php echo $row['subject'];?></td>
-                                            <td>
-                                                <a href="contact-detail.php?id=<?php echo $row['id']?>" class="btn btn-success btn-sm">Detail</a>
-                                                <a onclick="return confirm('Are you sure want to delete this data?')" href="contact-form.php?delete=<?php echo $row['id']?>" class="btn btn-danger btn-sm">Delete</a>
-                                            </td>
-                                        </tr>
-                                        <?php endforeach ?>
-                                    </tbody>
-                                </table>
+                    <div class="col-lg-12">
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="card-title">Contact Detail</h5>
+                                <div class="row mb-3">
+                                    <div class="col-md-4">
+                                        <label for="exampleInputEmail1" class="form-label">Name</label>
+                                        <input type="text" name="name" class="form-control" id="name" aria-describedby="emailHelp" readonly value="<?php echo $row['name'] ?>">
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label for="exampleInputEmail1" class="form-label">Email</label>
+                                        <input type="email" name="email" class="form-control" id="email" aria-describedby="emailHelp" readonly value="<?php echo $row['email'] ?>">
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label for="exampleInputEmail1" class="form-label">Subject</label>
+                                        <input type="text" name="subject" class="form-control" id="subject" aria-describedby="emailHelp" readonly value="<?php echo $row['subject'] ?>">
+                                    </div>
+                                </div>
+                                <div class="row mb-3">
+                                    <div class="col-md-12">
+                                        <label for="exampleInputEmail1" class="form-label">Message</label>
+                                        <textarea name="message" id="message" class="form-control" readonly><?php echo $row['message']?></textarea>
+                                    </div>
+                                </div>
+
+                                <a href="contact-form.php" class="btn btn-outline-danger">Back</a>
                             </div>
                         </div>
                     </div>
-                </div>
-            <div class="col-lg-4">
-                <!-- <div class="card">
+                    <div class="col-lg-4">
+                        <!-- <div class="card">
                     <div class="card-body">
                     <h5 class="card-title d-flex align-items-center gap-2 mb-5 pb-3">Sessions by
                         device<span><iconify-icon icon="solar:question-circle-bold" class="fs-7 d-flex text-muted" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="tooltip-success" data-bs-title="Locations"></iconify-icon></span>
@@ -208,9 +199,9 @@ if (isset($_GET['delete'])){
                         </div>
                     </div>
                 </div> -->
-            </div>
-            <div class="col-lg-4">
-                <!-- <div class="card overflow-hidden hover-img">
+                    </div>
+                    <div class="col-lg-4">
+                        <!-- <div class="card overflow-hidden hover-img">
                     <div class="position-relative">
                     <a href="javascript:void(0)">
                         <img src="portofolio/src/assets/images/blog/blog-img1.jpg" class="card-img-top" alt="matdash-img">
@@ -302,16 +293,16 @@ if (isset($_GET['delete'])){
                     class="pe-1 text-primary text-decoration-underline">ThemeWagon</a></p>
                 </div>
             </div> -->
-        </div>
-    </div>
-    <script src="portofolio/src/assets/libs/jquery/dist/jquery.min.js"></script>
-    <script src="portofolio/src/assets/libs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="portofolio/src/assets/libs/apexcharts/dist/apexcharts.min.js"></script>
-    <script src="portofolio/src/assets/libs/simplebar/dist/simplebar.js"></script>
-    <script src="portofolio/src/assets/js/sidebarmenu.js"></script>
-    <script src="portofolio/src/assets/js/app.min.js"></script>
-    <script src="portofolio/src/assets/js/dashboard.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/iconify-icon@1.0.8/dist/iconify-icon.min.js"></script>
+                    </div>
+                </div>
+                <script src="portofolio/src/assets/libs/jquery/dist/jquery.min.js"></script>
+                <script src="portofolio/src/assets/libs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+                <script src="portofolio/src/assets/libs/apexcharts/dist/apexcharts.min.js"></script>
+                <script src="portofolio/src/assets/libs/simplebar/dist/simplebar.js"></script>
+                <script src="portofolio/src/assets/js/sidebarmenu.js"></script>
+                <script src="portofolio/src/assets/js/app.min.js"></script>
+                <script src="portofolio/src/assets/js/dashboard.js"></script>
+                <script src="https://cdn.jsdelivr.net/npm/iconify-icon@1.0.8/dist/iconify-icon.min.js"></script>
 </body>
 
 </html>
