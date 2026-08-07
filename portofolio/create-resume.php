@@ -45,7 +45,7 @@ if (isset($_POST['save'])) {
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>SeoDash Free Bootstrap Admin Template by Adminmart</title>
+    <title>Create & Edit Resume</title>
     <link rel="shortcut icon" type="image/png" href="portofolio/src/assets/images/logos/seodashlogo.png" />
     <link rel="stylesheet" href="portofolio/src/assets/css/styles.min.css" />
 </head>
@@ -160,10 +160,6 @@ if (isset($_POST['save'])) {
                                     <div class="mb-4">
                                         <label for="exampleInputPassword1" class="form-label">Institution</label>
                                         <input type="text" name="institution" class="form-control" id="institution" required value="<?php echo ($id) ? $row['institution'] : ''?>">
-                                    </div>
-                                    <div class="mb-4">
-                                        <label for="exampleInputPassword1" class="form-label">Description</label>
-                                        <textarea name="description" id="" class="form-control"><?php echo ($id) ? $row['description'] : ''?></textarea>
                                     </div>
                                     <div class="mb-4">
                                         <label for="exampleInputPassword1" class="form-label">Description Detail</label>

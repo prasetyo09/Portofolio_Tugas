@@ -23,7 +23,7 @@ if (isset($_GET['delete'])) {
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>SeoDash Free Bootstrap Admin Template by Adminmart</title>
+    <title>Resume</title>
     <link rel="shortcut icon" type="image/png" href="portofolio/src/assets/images/logos/seodashlogo.png" />
     <link rel="stylesheet" href="portofolio/src/assets/css/styles.min.css" />
 </head>
@@ -127,10 +127,9 @@ if (isset($_GET['delete'])) {
                                         <thead>
                                             <tr class="border-2 border-bottom border-primary border-0">
                                                 <th scope="col" class="text-center ps-0">No</th>
-                                                <th class="col" class="text-center ps-0">Title/Experience</th>
+                                                <th scope="col" class="text-center ps-0">Title/Experience</th>
                                                 <th scope="col" class="text-center ps-0">Year</th>
                                                 <th scope="col" class="text-center ps-0">Institution</th>
-                                                <th scope="col" class="text-center ps-0">Description</th>
                                                 <th scope="col" class="text-center ps-0">Detail</th>
                                                 <th scope="col" class="text-center ps-0">Action</th>
                                             </tr>
@@ -142,7 +141,6 @@ if (isset($_GET['delete'])) {
                                                     <td class="text-center fw-medium"><?php echo $row['title']; ?></td>
                                                     <td class="text-center fw-medium"><?php echo $row['year_start'] . " - " . $row['year_end']; ?></td>
                                                     <td class="text-center fw-medium"><?php echo $row['institution']; ?></td>
-                                                    <td class="text-center fw-medium"><?php echo $row['description']; ?></td>
                                                     <td class="text-center fw-medium"><?php echo $row['desc_detail']; ?></td>
                                                     <td>
                                                         <a href="create-resume.php?edit=<?php echo $row['id'] ?>" class="btn btn-success btn-sm">Edit</a>

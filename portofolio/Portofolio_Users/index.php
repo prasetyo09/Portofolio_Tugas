@@ -6,11 +6,13 @@ $profile = mysqli_fetch_assoc($q_profile);
 $q_contact = mysqli_query($conn, "SELECT * FROM contact ORDER BY id DESC LIMIT 1");
 $contact = mysqli_fetch_assoc($q_contact);
 
-$q_skills = mysqli_query($conn, "SELECT * FROM skills ORDER BY id DESC");
+$q_skills = mysqli_query($conn, "SELECT * FROM skills ORDER BY id ASC");
 $skills = mysqli_fetch_all($q_skills, MYSQLI_ASSOC);
+$chunks = array_chunk($skills, ceil(count($skills) / 2));
 
-$q_resume = mysqli_query($conn, "SELECT * FROM resume ORDER BY id DESC");
+$q_resume = mysqli_query($conn, "SELECT * FROM resume ORDER BY id ASC");
 $resume = mysqli_fetch_all($q_resume, MYSQLI_ASSOC);
+$chunks1 = array_chunk($resume, ceil(count($resume) / 2));
 
 $q_about = mysqli_query($conn, "SELECT * FROM about ORDER BY id DESC LIMIT 1");
 $about = mysqli_fetch_assoc($q_about);
@@ -40,7 +42,7 @@ if (isset($_POST['submit'])) {
 <head>
   <meta charset="utf-8">
   <meta content="width=device-width, initial-scale=1.0" name="viewport">
-  <title>Index - iPortfolio Bootstrap Template</title>
+  <title>My Portfolio</title>
   <meta content="" name="description">
   <meta content="" name="keywords">
 
@@ -101,7 +103,8 @@ if (isset($_POST['submit'])) {
         <li><a href="#hero" class="active"><i class="bi bi-house navicon"></i>Home</a></li>
         <li><a href="#about"><i class="bi bi-person navicon"></i> About</a></li>
         <li><a href="#resume"><i class="bi bi-file-earmark-text navicon"></i> Resume</a></li>
-        <!-- <li><a href="#portfolio"><i class="bi bi-images navicon"></i> Portfolio</a></li>
+        <!-- <li><a href="#portfolio"><i class="bi bi-images navicon"></i> Portfolio</a></li> -->
+         <!--
         <li><a href="#services"><i class="bi bi-hdd-stack navicon"></i> Services</a></li>
         <li class="dropdown"><a href="#"><i class="bi bi-menu-button navicon"></i> <span>Dropdown</span> <i class="bi bi-chevron-down toggle-dropdown"></i></a>
           <ul>
@@ -121,6 +124,7 @@ if (isset($_POST['submit'])) {
           </ul>
         </li> -->
         <li><a href="#contact"><i class="bi bi-envelope navicon"></i> Contact</a></li>
+        <li><a href="../index.php"><i class="bi bi-diamond navicon"></i> Admin Page</a></li>
       </ul>
     </nav>
 
@@ -135,7 +139,7 @@ if (isset($_POST['submit'])) {
 
       <div class="container" data-aos="fade-up" data-aos-delay="100">
         <h2><?php echo $image['name']?></h2>
-        <p>I'm <span class="typed" data-typed-items="Designer, Web Developer, Freelancer, Photographer">Designer</span><span class="typed-cursor typed-cursor--blink" aria-hidden="true"></span><span class="typed-cursor typed-cursor--blink" aria-hidden="true"></span></p>
+        <p>I'm <span class="typed" data-typed-items="Web Developer, Video Editor, Music Producer, Manusia Biasa">Web Developer</span><span class="typed-cursor typed-cursor--blink" aria-hidden="true"></span><span class="typed-cursor typed-cursor--blink" aria-hidden="true"></span></p>
       </div>
 
     </section><!-- /Hero Section -->
@@ -146,7 +150,7 @@ if (isset($_POST['submit'])) {
       <!-- Section Title -->
       <div class="container section-title" data-aos="fade-up">
         <h2>About</h2>
-        <p>Magnam dolores commodi suscipit. Necessitatibus eius consequatur ex aliquid fuga eum quidem. Sit sint consectetur velit. Quisquam quos quisquam cupiditate. Et nemo qui impedit suscipit alias ea. Quia fugiat sit in iste officiis commodi quidem hic quas.</p>
+        <p><?php echo $about['description']?></p>
       </div><!-- End Section Title -->
 
       <div class="container" data-aos="fade-up" data-aos-delay="100">
@@ -158,14 +162,13 @@ if (isset($_POST['submit'])) {
           <div class="col-lg-8 content">
             <h2><?php echo $about['role']?></h2>
             <p class="fst-italic py-3">
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore
-              magna aliqua.
+              Here is a quick overview of my personal information and professional background.
             </p>
             <div class="row">
               <div class="col-lg-6">
                 <ul>
                   <li><i class="bi bi-chevron-right"></i> <strong>Birthday:</strong> <span><?php echo $about['birthday']?></span></li>
-                  <li><i class="bi bi-chevron-right"></i> <strong>Website:</strong> <span><?php echo $about['website']?></span></li>
+                  <li><i class="bi bi-chevron-right"></i> <strong>Website:</strong> <span><a href="<?php echo $about['website']?>"><?php echo $about['website']?></a></span></li>
                   <li><i class="bi bi-chevron-right"></i> <strong>Phone:</strong> <span><?php echo $about['phone']?></span></li>
                   <li><i class="bi bi-chevron-right"></i> <strong>City:</strong> <span><?php echo $about['city']?></span></li>
                 </ul>
@@ -179,8 +182,7 @@ if (isset($_POST['submit'])) {
               </div>
             </div>
             <p class="py-3">
-              Officiis eligendi itaque labore et dolorum mollitia officiis optio vero. Quisquam sunt adipisci omnis et ut. Nulla accusantium dolor incidunt officia tempore. Et eius omnis.
-              Cupiditate ut dicta maxime officiis quidem quia. Sed et consectetur qui quia repellendus itaque neque.
+              Outside of programming, I enjoy creating digital content, editing videos, and exploring new technologies. These hobbies allow me to improve my creativity, problem-solving skills, and continuously learn new things.
             </p>
           </div>
         </div>
@@ -189,8 +191,8 @@ if (isset($_POST['submit'])) {
 
     </section><!-- /About Section -->
 
-    <!-- Stats Section -->
-    <section id="stats" class="stats section">
+    
+    <!-- <section id="stats" class="stats section">
 
       <div class="container" data-aos="fade-up" data-aos-delay="100">
 
@@ -202,7 +204,7 @@ if (isset($_POST['submit'])) {
               <span data-purecounter-start="0" data-purecounter-end="232" data-purecounter-duration="1" class="purecounter"></span>
               <p><strong>Happy Clients</strong> <span>consequuntur quae</span></p>
             </div>
-          </div><!-- End Stats Item -->
+          </div>
 
           <div class="col-lg-3 col-md-6">
             <div class="stats-item">
@@ -210,7 +212,7 @@ if (isset($_POST['submit'])) {
               <span data-purecounter-start="0" data-purecounter-end="521" data-purecounter-duration="1" class="purecounter"></span>
               <p><strong>Projects</strong> <span>adipisci atque cum quia aut</span></p>
             </div>
-          </div><!-- End Stats Item -->
+          </div>
 
           <div class="col-lg-3 col-md-6">
             <div class="stats-item">
@@ -218,7 +220,7 @@ if (isset($_POST['submit'])) {
               <span data-purecounter-start="0" data-purecounter-end="1453" data-purecounter-duration="1" class="purecounter"></span>
               <p><strong>Hours Of Support</strong> <span>aut commodi quaerat</span></p>
             </div>
-          </div><!-- End Stats Item -->
+          </div>
 
           <div class="col-lg-3 col-md-6">
             <div class="stats-item">
@@ -226,13 +228,13 @@ if (isset($_POST['submit'])) {
               <span data-purecounter-start="0" data-purecounter-end="32" data-purecounter-duration="1" class="purecounter"></span>
               <p><strong>Hard Workers</strong> <span>rerum asperiores dolor</span></p>
             </div>
-          </div><!-- End Stats Item -->
+          </div>
 
         </div>
 
       </div>
 
-    </section><!-- /Stats Section -->
+    </section> -->
 
     <!-- Skills Section -->
     <section id="skills" class="skills section light-background">
@@ -240,16 +242,16 @@ if (isset($_POST['submit'])) {
       <!-- Section Title -->
       <div class="container section-title" data-aos="fade-up">
         <h2>Skills</h2>
-        <p>Necessitatibus eius consequatur ex aliquid fuga eum quidem sint consectetur velit</p>
+        <p>A collection of technical skills that I use to develop responsive and functional web applications.</p>
       </div><!-- End Section Title -->
 
       <div class="container" data-aos="fade-up" data-aos-delay="100">
 
         <div class="row skills-content skills-animation">
-
+          <?php foreach ($chunks as $group) {
+          ?>
           <div class="col-lg-6">
-            <?php foreach ($skills as $v) {
-              # code...
+            <?php foreach ($group as $v) {
             ?>
             <div class="progress">
               <span class="skill"><span><?php echo $v['name']?></span> <i class="val"><?php echo $v['progress'] . "%"?></i></span>
@@ -261,13 +263,10 @@ if (isset($_POST['submit'])) {
             <?php
             }
             ?>
-
-            
           </div>
-
-          <div class="col-lg-6">
-
-          </div>
+          <?php
+          }
+          ?>
 
         </div>
 
@@ -281,15 +280,18 @@ if (isset($_POST['submit'])) {
       <!-- Section Title -->
       <div class="container section-title" data-aos="fade-up">
         <h2>Resume</h2>
-        <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. In soluta ullam rem iste debitis minima laborum, voluptatem iusto amet similique, explicabo nulla ut delectus quia? In, deleniti? Non, consequatur eveniet.</p>
+        <p>My educational journey and project experiences have provided me with a strong foundation in software and web development.</p>
       </div><!-- End Section Title -->
 
       <div class="container">
 
         <div class="row">
-          <div class="col-lg-12" data-aos="fade-up" data-aos-delay="100">
-            <h3 class="resume-title">Education and Experience</h3>
-            <?php foreach ($resume as $v) {
+          <?php foreach ($chunks1 as $group) {
+            ?>
+          <div class="col-lg-6" data-aos="fade-up" data-aos-delay="100">
+            <h2 class="resume-title">Education and Experience</h2>
+            
+            <?php foreach ($group as $v) {
             ?>
             <div class="resume-item">
               
@@ -302,6 +304,9 @@ if (isset($_POST['submit'])) {
             }
             ?>
           </div>
+          <?php
+          }
+          ?>
         </div>
 
         </div>
@@ -333,11 +338,11 @@ if (isset($_POST['submit'])) {
 
             <div class="col-lg-4 col-md-6 portfolio-item isotope-item filter-app">
               <div class="portfolio-content h-100">
-                <img src="assets/img/portfolio/app-1.jpg" class="img-fluid" alt="">
+                <img src="../assets/img/app-1.jpg" class="img-fluid" alt="" width="1920px" height="1080px">
                 <div class="portfolio-info">
                   <h4>App 1</h4>
-                  <p>Lorem ipsum, dolor sit amet consectetur</p>
-                  <a href="assets/img/portfolio/app-1.jpg" title="App 1" data-gallery="portfolio-gallery-app" class="glightbox preview-link"><i class="bi bi-zoom-in"></i></a>
+                  <p>Portfolio Web</p>
+                  <a href="assets/img/portfolio/product-1.jpg" title="App 1" data-gallery="portfolio-gallery-app" class="glightbox preview-link"><i class="bi bi-zoom-in"></i></a>
                   <a href="portfolio-details.html" title="More Details" class="details-link"><i class="bi bi-link-45deg"></i></a>
                 </div>
               </div>
@@ -345,10 +350,10 @@ if (isset($_POST['submit'])) {
 
             <div class="col-lg-4 col-md-6 portfolio-item isotope-item filter-product">
               <div class="portfolio-content h-100">
-                <img src="assets/img/portfolio/product-1.jpg" class="img-fluid" alt="">
+                <img src="../assets/img/Music-1.jpg" class="img-fluid" alt="" width="1920px" height="1080px">
                 <div class="portfolio-info">
-                  <h4>Product 1</h4>
-                  <p>Lorem ipsum, dolor sit amet consectetur</p>
+                  <h4>Music 1</h4>
+                  <p>Music Producer</p>
                   <a href="assets/img/portfolio/product-1.jpg" title="Product 1" data-gallery="portfolio-gallery-product" class="glightbox preview-link"><i class="bi bi-zoom-in"></i></a>
                   <a href="portfolio-details.html" title="More Details" class="details-link"><i class="bi bi-link-45deg"></i></a>
                 </div>
@@ -359,7 +364,7 @@ if (isset($_POST['submit'])) {
               <div class="portfolio-content h-100">
                 <img src="assets/img/portfolio/branding-1.jpg" class="img-fluid" alt="">
                 <div class="portfolio-info">
-                  <h4>Branding 1</h4>
+                  <h4>Video 1</h4>
                   <p>Lorem ipsum, dolor sit amet consectetur</p>
                   <a href="assets/img/portfolio/branding-1.jpg" title="Branding 1" data-gallery="portfolio-gallery-branding" class="glightbox preview-link"><i class="bi bi-zoom-in"></i></a>
                   <a href="portfolio-details.html" title="More Details" class="details-link"><i class="bi bi-link-45deg"></i></a>
@@ -374,102 +379,6 @@ if (isset($_POST['submit'])) {
                   <h4>Books 1</h4>
                   <p>Lorem ipsum, dolor sit amet consectetur</p>
                   <a href="assets/img/portfolio/books-1.jpg" title="Branding 1" data-gallery="portfolio-gallery-book" class="glightbox preview-link"><i class="bi bi-zoom-in"></i></a>
-                  <a href="portfolio-details.html" title="More Details" class="details-link"><i class="bi bi-link-45deg"></i></a>
-                </div>
-              </div>
-            </div>
-
-            <div class="col-lg-4 col-md-6 portfolio-item isotope-item filter-app">
-              <div class="portfolio-content h-100">
-                <img src="assets/img/portfolio/app-2.jpg" class="img-fluid" alt="">
-                <div class="portfolio-info">
-                  <h4>App 2</h4>
-                  <p>Lorem ipsum, dolor sit amet consectetur</p>
-                  <a href="assets/img/portfolio/app-2.jpg" title="App 2" data-gallery="portfolio-gallery-app" class="glightbox preview-link"><i class="bi bi-zoom-in"></i></a>
-                  <a href="portfolio-details.html" title="More Details" class="details-link"><i class="bi bi-link-45deg"></i></a>
-                </div>
-              </div>
-            </div>
-
-            <div class="col-lg-4 col-md-6 portfolio-item isotope-item filter-product">
-              <div class="portfolio-content h-100">
-                <img src="assets/img/portfolio/product-2.jpg" class="img-fluid" alt="">
-                <div class="portfolio-info">
-                  <h4>Product 2</h4>
-                  <p>Lorem ipsum, dolor sit amet consectetur</p>
-                  <a href="assets/img/portfolio/product-2.jpg" title="Product 2" data-gallery="portfolio-gallery-product" class="glightbox preview-link"><i class="bi bi-zoom-in"></i></a>
-                  <a href="portfolio-details.html" title="More Details" class="details-link"><i class="bi bi-link-45deg"></i></a>
-                </div>
-              </div>
-            </div>
-
-            <div class="col-lg-4 col-md-6 portfolio-item isotope-item filter-branding">
-              <div class="portfolio-content h-100">
-                <img src="assets/img/portfolio/branding-2.jpg" class="img-fluid" alt="">
-                <div class="portfolio-info">
-                  <h4>Branding 2</h4>
-                  <p>Lorem ipsum, dolor sit amet consectetur</p>
-                  <a href="assets/img/portfolio/branding-2.jpg" title="Branding 2" data-gallery="portfolio-gallery-branding" class="glightbox preview-link"><i class="bi bi-zoom-in"></i></a>
-                  <a href="portfolio-details.html" title="More Details" class="details-link"><i class="bi bi-link-45deg"></i></a>
-                </div>
-              </div>
-            </div>
-
-            <div class="col-lg-4 col-md-6 portfolio-item isotope-item filter-books">
-              <div class="portfolio-content h-100">
-                <img src="assets/img/portfolio/books-2.jpg" class="img-fluid" alt="">
-                <div class="portfolio-info">
-                  <h4>Books 2</h4>
-                  <p>Lorem ipsum, dolor sit amet consectetur</p>
-                  <a href="assets/img/portfolio/books-2.jpg" title="Branding 2" data-gallery="portfolio-gallery-book" class="glightbox preview-link"><i class="bi bi-zoom-in"></i></a>
-                  <a href="portfolio-details.html" title="More Details" class="details-link"><i class="bi bi-link-45deg"></i></a>
-                </div>
-              </div>
-            </div>
-
-            <div class="col-lg-4 col-md-6 portfolio-item isotope-item filter-app">
-              <div class="portfolio-content h-100">
-                <img src="assets/img/portfolio/app-3.jpg" class="img-fluid" alt="">
-                <div class="portfolio-info">
-                  <h4>App 3</h4>
-                  <p>Lorem ipsum, dolor sit amet consectetur</p>
-                  <a href="assets/img/portfolio/app-3.jpg" title="App 3" data-gallery="portfolio-gallery-app" class="glightbox preview-link"><i class="bi bi-zoom-in"></i></a>
-                  <a href="portfolio-details.html" title="More Details" class="details-link"><i class="bi bi-link-45deg"></i></a>
-                </div>
-              </div>
-            </div>
-
-            <div class="col-lg-4 col-md-6 portfolio-item isotope-item filter-product">
-              <div class="portfolio-content h-100">
-                <img src="assets/img/portfolio/product-3.jpg" class="img-fluid" alt="">
-                <div class="portfolio-info">
-                  <h4>Product 3</h4>
-                  <p>Lorem ipsum, dolor sit amet consectetur</p>
-                  <a href="assets/img/portfolio/product-3.jpg" title="Product 3" data-gallery="portfolio-gallery-product" class="glightbox preview-link"><i class="bi bi-zoom-in"></i></a>
-                  <a href="portfolio-details.html" title="More Details" class="details-link"><i class="bi bi-link-45deg"></i></a>
-                </div>
-              </div>
-            </div>
-
-            <div class="col-lg-4 col-md-6 portfolio-item isotope-item filter-branding">
-              <div class="portfolio-content h-100">
-                <img src="assets/img/portfolio/branding-3.jpg" class="img-fluid" alt="">
-                <div class="portfolio-info">
-                  <h4>Branding 3</h4>
-                  <p>Lorem ipsum, dolor sit amet consectetur</p>
-                  <a href="assets/img/portfolio/branding-3.jpg" title="Branding 2" data-gallery="portfolio-gallery-branding" class="glightbox preview-link"><i class="bi bi-zoom-in"></i></a>
-                  <a href="portfolio-details.html" title="More Details" class="details-link"><i class="bi bi-link-45deg"></i></a>
-                </div>
-              </div>
-            </div>
-
-            <div class="col-lg-4 col-md-6 portfolio-item isotope-item filter-books">
-              <div class="portfolio-content h-100">
-                <img src="assets/img/portfolio/books-3.jpg" class="img-fluid" alt="">
-                <div class="portfolio-info">
-                  <h4>Books 3</h4>
-                  <p>Lorem ipsum, dolor sit amet consectetur</p>
-                  <a href="assets/img/portfolio/books-3.jpg" title="Branding 3" data-gallery="portfolio-gallery-book" class="glightbox preview-link"><i class="bi bi-zoom-in"></i></a>
                   <a href="portfolio-details.html" title="More Details" class="details-link"><i class="bi bi-link-45deg"></i></a>
                 </div>
               </div>
@@ -667,7 +576,7 @@ if (isset($_POST['submit'])) {
       <!-- Section Title -->
       <div class="container section-title" data-aos="fade-up">
         <h2>Contact</h2>
-        <p>Necessitatibus eius consequatur ex aliquid fuga eum quidem sint consectetur velit</p>
+        <p>Thank you for visiting my portfolio. If you have any questions, collaboration opportunities, or job offers, feel free to get in touch. I look forward to hearing from you.</p>
       </div><!-- End Section Title -->
 
       <div class="container" data-aos="fade-up" data-aos-delay="100">
@@ -701,14 +610,13 @@ if (isset($_POST['submit'])) {
                 </div>
               </div><!-- End Info Item -->
 
-              <iframe src=  "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3966.1748332709817!2d106.78206377589898!3d-6.240674561111726!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e69f117be704d39%3A0xa6c4306a678251a7!2sJl.%20Baru%20II%2C%20Kby.%20Lama%20Utara%2C%20Kec.%20Kebayoran%20Lama%2C%20Kota%20Jakarta%20Selatan%2C%20Daerah%20Khusus%20Ibukota%20Jakarta%2012240!5e0!3m2!1sid!2sid!4v1785988624530!5m2!1sid!2sid" width="470" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="strict-origin-when-cross-origin"></iframe>
+              <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3966.1748332709817!2d106.78206377589898!3d-6.240674561111726!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e69f117be704d39%3A0xa6c4306a678251a7!2sJl.%20Baru%20II%2C%20Kby.%20Lama%20Utara%2C%20Kec.%20Kebayoran%20Lama%2C%20Kota%20Jakarta%20Selatan%2C%20Daerah%20Khusus%20Ibukota%20Jakarta%2012240!5e0!3m2!1sid!2sid!4v1785988624530!5m2!1sid!2sid" width="470" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="strict-origin-when-cross-origin"></iframe>
             </div>
           </div>
 
           <div class="col-lg-7">
-            <form action="#" method="post"  data-aos="fade-up" data-aos-delay="200">
+            <form action="#" method="post" data-aos="fade-up" data-aos-delay="200">
               <div class="row gy-4">
-
                 <div class="col-md-6">
                   <label for="name-field" class="pb-2">Your Name</label>
                   <input type="text" name="name" id="name-field" class="form-control" required="">

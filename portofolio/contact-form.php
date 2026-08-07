@@ -23,7 +23,7 @@ if (isset($_GET['delete'])){
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>SeoDash Free Bootstrap Admin Template by Adminmart</title>
+  <title>Contact Form</title>
   <link rel="shortcut icon" type="image/png" href="portofolio/src/assets/images/logos/seodashlogo.png" />
   <link rel="stylesheet" href="portofolio/src/assets/css/styles.min.css" />
 </head>
@@ -126,7 +126,7 @@ if (isset($_GET['delete'])){
                                     <thead>
                                         <tr class="border-2 border-bottom border-primary border-0"> 
                                             <th scope="col" class="text-center ps-0">No</th>
-                                            <th class="col" class="text-center ps-0">Name</th>
+                                            <th scope="col" class="text-center ps-0">Name</th>
                                             <th scope="col" class="text-center ps-0">Email</th>
                                             <th scope="col" class="text-center ps-0">Subject</th>
                                             <th scope="col" class="text-center ps-0">Action</th>
