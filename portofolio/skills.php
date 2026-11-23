@@ -17,7 +17,7 @@ $rows  = mysqli_fetch_all($query, MYSQLI_ASSOC);
 if (isset($_GET['delete'])){
     $delete = $_GET ['delete'];
     $delete = mysqli_query ($conn, "DELETE FROM skills WHERE id='$delete'");
-    header("location:user.php?hapus=berhasil");
+    header("location:skills.php?hapus=berhasil");
 }
 ?>
 
@@ -127,7 +127,7 @@ if (isset($_GET['delete'])){
                     <div class="card">
                         <div class="card-body">
                             <h5 class="card-title">About</h5>
-                            <div class="table-responsive">
+                            <div class="table table-responsive">
                                 <table class="table text-nowrap align-middle mb-0">
                                     <thead>
                                         <tr class="border-2 border-bottom border-primary border-0"> 
