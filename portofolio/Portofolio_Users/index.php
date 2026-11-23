@@ -610,39 +610,45 @@ if (isset($_POST['submit'])) {
                 </div>
               </div><!-- End Info Item -->
 
-              <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3966.1748332709817!2d106.78206377589898!3d-6.240674561111726!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e69f117be704d39%3A0xa6c4306a678251a7!2sJl.%20Baru%20II%2C%20Kby.%20Lama%20Utara%2C%20Kec.%20Kebayoran%20Lama%2C%20Kota%20Jakarta%20Selatan%2C%20Daerah%20Khusus%20Ibukota%20Jakarta%2012240!5e0!3m2!1sid!2sid!4v1785988624530!5m2!1sid!2sid" width="470" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="strict-origin-when-cross-origin"></iframe>
+              <div class="info-item d-flex my-1">
+                <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3966.1748332709817!2d106.78206377589898!3d-6.240674561111726!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e69f117be704d39%3A0xa6c4306a678251a7!2sJl.%20Baru%20II%2C%20Kby.%20Lama%20Utara%2C%20Kec.%20Kebayoran%20Lama%2C%20Kota%20Jakarta%20Selatan%2C%20Daerah%20Khusus%20Ibukota%20Jakarta%2012240!5e0!3m2!1sid!2sid!4v1785988624530!5m2!1sid!2sid" width="470" height="250" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="strict-origin-when-cross-origin"></iframe>
+              </div>
             </div>
           </div>
 
           <div class="col-lg-7">
-            <form action="#" method="post" data-aos="fade-up" data-aos-delay="200">
-              <div class="row gy-4">
-                <div class="col-md-6">
-                  <label for="name-field" class="pb-2">Your Name</label>
-                  <input type="text" name="name" id="name-field" class="form-control" required="">
-                </div>
+            <div class="card">
+              <div class="card-body">
+                <form action="#" method="post" data-aos="fade-up" data-aos-delay="200">
+                  <div class="row gy-4">
+                    <div class="col-md-6">
+                      <label for="name-field" class="pb-2">Your Name</label>
+                      <input type="text" name="name" id="name-field" class="form-control" required="">
+                    </div>
 
-                <div class="col-md-6">
-                  <label for="email-field" class="pb-2">Your Email</label>
-                  <input type="email" class="form-control" name="email" id="email-field" required="">
-                </div>
+                    <div class="col-md-6">
+                      <label for="email-field" class="pb-2">Your Email</label>
+                      <input type="email" class="form-control" name="email" id="email-field" required="">
+                    </div>
 
-                <div class="col-md-12">
-                  <label for="subject-field" class="pb-2">Subject</label>
-                  <input type="text" class="form-control" name="subject" id="subject-field" required="">
-                </div>
+                    <div class="col-md-12">
+                      <label for="subject-field" class="pb-2">Subject</label>
+                      <input type="text" class="form-control" name="subject" id="subject-field" required="">
+                    </div>
 
-                <div class="col-md-12">
-                  <label for="message-field" class="pb-2">Message</label>
-                  <textarea class="form-control" name="message" rows="10" id="message-field" required=""></textarea>
-                </div>
+                    <div class="col-md-12">
+                      <label for="message-field" class="pb-2">Message</label>
+                      <textarea class="form-control" name="message" rows="10" id="message-field" required=""></textarea>
+                    </div>
 
-                <div class="col-md-12 text-center">
-                  <button type="submit" name="submit" value="Send Message" class="btn btn-primary">Send Message</button>
-                </div>
+                    <div class="col-md-12 text-center">
+                      <button type="submit" name="submit" value="Send Message" class="btn btn-primary">Send Message</button>
+                    </div>
 
+                  </div>
+                </form>
               </div>
-            </form>
+            </div>
           </div><!-- End Contact Form -->
 
         </div>
